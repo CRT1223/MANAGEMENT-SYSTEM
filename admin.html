@@ -1,0 +1,3333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASKETBALL EVENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./css/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="./jsresources/chart.js"></script>
+</head>
+<body>
+    <div class="wrapper" >
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <center><img src="3.png" alt="Basketball Tournament Logo" style="height: 100px; width: 100px;" class="logo-image-3"></center>
+            <ul class="unselect">
+                <center>
+                    <li><a onclick="setActiveSection('home')">Home</a></li>
+                    <li><a onclick="setActiveSection('teams')">Teams</a></li>
+                    <li><a onclick="setActiveSection('ticket')">Ticketing</a></li>
+                    <li><a onclick="setActiveSection('brackets')">Bracketing</a></li>
+                    <li><a onclick="setActiveSection('events')">Events</a></li>
+                    <li><a onclick="setActiveSection('records')">Records</a></li>
+                    <li><a onclick="setActiveSection('player')">Players</a></li>
+                </center>
+                
+            </ul>
+            <div class="w3-bottom">
+                    <img 
+                        src="logout-icon.png" 
+                        alt="Logout" 
+                        style="width: 3.2%; border-radius: 50%; cursor: pointer;" 
+                        onclick="logout()" 
+                    >               
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main_content">
+            <!-- For Header -->
+            <div class="title-team" style="text-align: center; margin-right: 10%; justify-content: center;" id="teamtitleSection">
+            </div>
+
+            <!-- Home Section -->
+            <div class="match-section" id="homeSection">
+                <div class="header-container">
+                    <h2><b>CURRENT MATCH</b></h2>     
+                    <button class="edit-btn" onclick="openEditSlide('header')">EDIT</button>
+                </div> 
+                <br>
+                <span class="match-header w3-round-xxlarge">
+                    <div class="team-container-current">
+                        <img class="logo-image-current round-pic team-logo-1" alt="Basketball Team Logo">
+                        <span class="team-display-left">Team 1</span>
+                    </div>
+                    <span class="vs" style="font-size: 130px;">VS</span>
+                    <div class="team-container-current">
+                        <img class="logo-image-current round-pic team-logo-2" alt="Basketball Team Logo">
+                        <span class="team-display-right">Team 2</span>
+                    </div>
+                </span>                                
+                <div class="header-container">
+                    <h2><b>PREVIOUS MATCHES</b></h2>     
+                    <button class="add-btn" onclick="openAddSlide()">ADD</button>
+                </div>                
+
+                <!-- Match details list -->
+                <div class="match-list" id="matchList">
+                    <!-- Game results display -->
+                </div>
+
+                   <!-- Edit/Add Slide Overlay -->
+                <div class="edit-slide" id="editSlide">
+                    <div class="edit-container">
+                        <center><h3><b>Edit/Add Match</b></h3></center>
+                        <form>
+                            <div style="display: flex;">
+                                <select id="teamSelectLeft" style="width: 100%;">
+                                    <option>Select Team 1</option>
+                                </select>
+                                <span>&nbsp;</span>
+                                <span>
+                                    <input type="number" id="scoreLeft" style="width: 100%;" placeholder="Score">
+                                </span>
+                            </div>
+                            <center><span><b>VS</b></span></center>
+                            <div style="display: flex;">
+                                <select id="teamSelectRight" style="width: 100%">
+                                    <option>Select Team 2</option>
+                                </select>
+                                <span>&nbsp;</span>
+                                <span>
+                                    <input type="number" id="scoreRight" style="width: 100%;" placeholder="Score">
+                                </span>
+                            </div>
+                        </form>
+                        <button class="save-btn" style="background-color: #66bf2e;">SAVE</button>
+                        <button onclick="closeEditAddSlide()" style="background-color: #ff5e5e;">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teams-section" id="teamsSection" style="height: 655px; display: none;">
+                <div style="text-align: right;"><button onclick="openAddTeamModal()" class="w3-button w3-button w3-round-large w3-border" style="background-color: rgba(0, 106, 255, 1); color: white; font-size: 18px;">ADD</button></div>
+                <div style="padding-bottom: 1%;"></div>
+                <div style="max-height: 615px; overflow-y: auto;">
+                    <!-- Container for Team Boxes -->
+                    <div class="team-container" id="team-container-div" style="margin-top: 2%;">
+                        <!-- Team boxes will be dynamically generated by JavaScript -->
+                    </div>
+            
+                    <!-- Form Overlay for Team Information -->
+                    <div id="formOverlay" class="form-overlay">
+                        <div class="team-info-form">
+                            <!-- Team Information -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; ">
+                                <h2 style="text-align: left; font-weight: bold;">TEAM INFORMATION</h2>
+                                <span id="editTeamBtn" style="padding-bottom: 2%; font-size: 18px;">
+                                <a>EDIT ALL INFO</a>
+                                <a onclick="enableEditMode()"><i class="fas fa-edit"></i></a>
+                                </span>
+                            </div>
+                            <div class="team-info-container">
+                                <div class="image-upload" id="logoContainer">
+                                    <img id="teamImagePreview" src="upload-icon.png" width="150" height="150" alt="Team Logo" class="upload-icon">
+                                </div>
+                                <div class="team-info-details">
+                                    <div id="teamNameDisplay" class="team-name-display"></div>
+                                    <input type="text" id="teamNameInput" placeholder="Team Name" style="display: none; width: 100%; font-size: 20px; text-transform: capitalize;">
+                                    <br>
+                                    <div id="teamCoachDisplay" class="team-coach-display"></div>
+                                    <input type="text" id="teamCoachInput" placeholder="Coach Name" class="w3-border w3-input" style="display: none; width: 100%; border: solid grey; text-transform: capitalize;">
+                                </div>
+                            </div>                            
+            
+                            <!-- Members List -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; ">
+                                <h2 style="text-align: left; font-weight: bold; font-size: 25px;">MEMBERS</h2>
+                                <span id="editPositionBtn" style="padding-bottom: 2%; font-size: 18px;">
+                                    <a>EDIT POSITION</a>
+                                    <a onclick="enableEditPositionMode()"><i class="fas fa-edit"></i></a>
+                                </span>
+                            </div>                            
+                            <center>
+                                <input type="text" id="playerSearchInput" placeholder="Search Players" oninput="searchPlayers()" style="margin-bottom: 10px; padding: 5px; width: 50%; display: none;">
+                                <div id="noResultsMessage" style="display: none;">NO PLAYER FOUND, TO FIND PLAYER TRY TO ADD NEW PLAYER.</div>
+                            </center>
+                            <div style="text-align: left; font-size: 20px; padding-left: 3%; max-height: 185px; overflow-y: auto;" id="memberform">
+                                <!-- Player names will be dynamically generated here -->
+                            </div>
+            
+                            <!-- Edit and Save Buttons -->
+                            <div style="text-align: right;">
+                                <button id="savePositionBtn" class="w3-button w3-round-large w3-border" style="display: none; background-color: rgba(29, 66, 138, 1); color: #fffdfd; font-size: 21px; margin-top: 30px;" onclick="savePlayerPositions()">SAVE</button>
+                                <button id="PositioncancelBtn" class="w3-button w3-round-large w3-border" style="display: none; background-color: rgba(99, 99, 99, 1); color: #fffdfd; font-size: 21px; margin-top: 30px;" onclick="cancelOperation()">CANCEL</button>
+                                <button id="saveTeamBtn" class="save-team-btn w3-button w3-round-large w3-border" style="display: none; background-color: rgba(29, 66, 138, 1); color: #fffdfd; font-size: 21px; margin-top: 30px;" onclick="saveTeamInfo()">SAVE</button>
+                                <button id="InfocancelBtn" class="cancel-team-btn w3-button w3-round-large w3-border" style="display: none; background-color: rgba(99, 99, 99, 1); color: #fffdfd; font-size: 21px; margin-top: 30px;" onclick="cancelOperation()">CANCEL</button>
+                                <button id="CloseBtn" class="w3-button w3-round-large w3-border" style="background-color: rgba(99, 99, 99, 1); color: #fffdfd; font-size: 21px; margin-top: 30px;" onclick="closeFormOverlay()">CLOSE</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="addTeamModal" class="form-overlay">
+                        <div class="team-info-form">
+                            <h2 style="text-align: left; font-weight: bold;">ADD TEAM INFORMATION</h2>
+                            <div class="team-info-container">
+                                <!-- Uploadable Team Logo -->
+                                <div class="image-upload" id="logoAddContainer">
+                                    <label for="teamImageAddInput" style="cursor: pointer;">
+                                        <img id="addteamImagePreview" src="upload-icon.png" width="250" height="250" alt="Upload Team Logo" class="upload-icon round">
+                                   
+                                    </label>
+                                    <input type="file" id="teamImageAddInput" accept="image/*" onchange="previewTeamImage(event)" hidden>
+                                </div>
+                                
+                                <!-- Team Details -->
+                                <div class="team-info-details">
+                                    <input type="text" id="addTeamNameInput" style="text-transform: capitalize;" placeholder="Team Name" class="w3-input w3-border">
+                                    <br>
+                                    <input type="text" id="addTeamCoachInput" style="text-transform: capitalize;" placeholder="Coach Name" class="w3-input w3-border">
+                                </div>
+                            </div>
+                    
+                            <!-- Members Section -->
+                            <h2 style="text-align: left; font-weight: bold; font-size: 25px;">MEMBERS</h2>
+                            <input type="text" id="addPlayerSearchInput" placeholder="Search Players" oninput="searchPlayersInAddModal()" class="w3-input w3-border" style="margin-bottom: 10px;">
+                            <div id="addNoResultsMessage" style="display: none; color: red; text-align: center; margin-top: 10px;">NO PLAYER FOUND, TO FIND PLAYER TRY TO ADD NEW PLAYER.</div>
+                            <div id="addMemberForm" class="members-container" style="font-size: 18px;">
+                                <!-- Player list will be dynamically generated here -->
+                            </div>
+                    
+                            <!-- Action Buttons -->
+                            <div style="text-align: right;">
+                                <button id="saveAddedTeamBtn" class="save-team-btn" onclick="saveAddedTeamInfo()">SAVE</button>
+                                <button id="cancelAddedTeamBtn" class="cancel-team-btn" onclick="closeAddTeamModal()">CANCEL</button>
+                            </div>
+                        </div>
+                    </div>                                       
+                </div>
+            </div>     
+            
+            <!-- Ticket -->
+            <div id="ticketSection" style="display: none;">
+                <br>
+                <!-- Filters Section -->
+                <div class="filters">
+                    <br>
+                    <label for="monthTicketingDropdown">Month:</label>
+                    <select class="w3-round-large" id="monthTicketingDropdown"></select>
+        
+                    <label for="yearTicketingDropdown">Year:</label>
+                    <select class="w3-round-large" id="yearTicketingDropdown" style="font-size: 17px;"></select>
+                    
+                    <span id="eventdropdowndiv" style="display: none;">
+                        <label for="eventDropdown" >Event:</label>
+                        <select class="w3-round-large" id="eventDropdown"></select>
+                    </span>
+                    
+                </div>
+                <br>
+                <div class="main-container">
+                    <!-- Left Window -->
+                    <div class="left-window">
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" id="searchInput" placeholder="Search by Reference No. or Buyer Name" style="width: 100%; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <table id="ticketTable">
+                            <thead>
+                                <tr>
+                                    <th>REFERENCE NO.</th>
+                                    <th>BUYER NAME</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" style="color: white;">
+                                <!-- Rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                        <!-- No Results Message -->
+                        <div id="noTicketingResultsMessage" style="display: none; text-align: center; color: red;">
+                            No Results Found
+                        </div>
+                    </div>
+                
+                    <!-- Right Window -->
+                    <div class="right-window">
+                        <div class="right-window-upper" style="background: linear-gradient(0deg, #B9DDFF, #B9DDFF); border-radius: 23px; height: 200px;">
+                            <!-- Upper Section: Pie Chart -->
+                            <div class="chart-container">
+                                <div style="width: 150px; height: 150px;">
+                                    <canvas id="pieChart"></canvas>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: rgba(89, 151, 176, 1);"></div>
+                                        <span>Upper Box: <span id="upperCount">0</span> Tickets Sold</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: rgba(144, 186, 205, 1);"></div>
+                                        <span>Lower Box: <span id="lowerCount">0</span> Tickets Sold</span>
+                                    </div>
+                                    <p style="font-weight: bold;"><span id="totalCount">0</span> TICKETS SOLD </p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="right-window-lower w3-round-large">
+                            <!-- Lower Section: Details -->
+                            <div class="details-section"  id="detailsSection">
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+
+            <!-- Brackets Section -->
+            <div id="bracketsSection" style="display: none; height: 675px;">
+                    <!-- Bracket content goes here -->
+                    <div class="bracket-container" id="bracket-container">
+                        <!-- Bracket will be dynamically rendered here -->
+                    </div>  
+
+                    <div id="edit-modal" class="modal">
+                        <div class="modal-content">
+                            <center><h3 id="modal-title"></h3>
+                                <div id="modal-body"></div>
+                                <form id="edit-form" name="edit-form"></form>
+                            </center>  
+                            <div class="modal-actions">
+                                <center>
+                                    <button onclick="savebracketChanges()">SAVE CHANGES</button>
+                                    <button onclick="closeModal()">CANCEL</button>    
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Events Section -->
+            <div id="eventsSection" style="display: none;">
+                <div class="calendar-section w3-half">
+                    <!-- "Add Event" Button -->
+                    <button class="addevents w3-button" style="background-color: #78b5ea;">ADD</button>
+            
+                    <!-- Month & Year Dropdowns -->
+                    <div class="calendar-header">
+                        <select id="monthDropdown" onchange="updateCalendar()">
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <select id="yearDropdown" onchange="updateCalendar()">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+            
+                    <!-- Calendar Container -->
+                    <div id="calendarContainer"></div>
+                </div>
+            
+                <!-- Event Panel Section -->
+                <div class="w3-half" style="padding-left: 2%; padding-bottom: 1%;">
+                    <div style="padding-left: 10%;">
+                        <div id="eventList" class="event-list" >
+                            <center><h3>SELECTED DATE EVENT</h3>
+                                <div class="selected-date-container" style="display: flex; align-items: center; padding: 0;gap: 10px; padding-left: 1%; margin: 0%;">
+                                    <!-- Left: Day Number -->
+                                    <div style="font-size: 40px; font-weight: bold; line-height: 2; text-align: center; color: rgb(241, 241, 241);">
+                                        <span id="selectedDayNumber"></span>
+                                    </div>
+                                    <!-- Right: Day Name and Month/Year -->
+                                    <div style="text-align: left;">
+                                        <div style="font-size: 20px; font-weight: bold; line-height: 1;">
+                                            <span id="selectedDayName"></span>
+                                        </div>
+                                        <div style="font-size: 20px; line-height: 1;">
+                                            <span id="selectedMonthYear"></span>
+                                        </div>
+                                    </div>
+                                </div>                                               
+                            
+                                <div class="table-container-event">
+                                    <table style="text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th>EVENT TITLE</th>
+                                                <th>TIME</th>
+                                                <th>ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="eventListBody" style="background-color: #ffffff;">
+                                            <!-- Event entries will be appended here by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    
+                    <div style="padding-top: 1%;"></div>
+                    <div id="upcomingList" class="upcoming-list" style="text-align: center;">
+                        <h3>UPCOMING EVENT</h3>
+                        <center>
+                            <div class="table-container-upcoming">
+                                <table style="text-align: center;">
+                                    <thead>
+                                        <tr>
+                                            <th>EVENT TITLE</th>
+                                            <th>DATE</th>
+                                            <th>TIME</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="upcomingListBody" style="color: black; background-color: #ffffff;">
+                                        <!-- Upcoming events will be dynamically inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>                            
+                        </center>
+                    </div>
+                </div>
+            
+                <!-- Event Form Overlay -->             
+                <div id="eventFormOverlay" class="form-overlay-events" style="display: none;">
+                    <div class="event-info-form">
+                        <button class="close-btn" style="font-size: 35px; color: #ff5e5e;" onclick="closeEventFormOverlay()">×</button>
+                        <h2 style="font-size: 20px; padding-top: 3%;">Update Event for <span id="selectedDateDisplay"></span></h2>
+                        <input type="text" id="eventTitleInput" style="text-transform: capitalize;" placeholder="Event Title">
+                        <h2 style="font-size: 20px; padding-top: 2%;">Select Time:</h2>
+                        <input type="time" id="eventTimeInput" style="text-transform: uppercase;">
+                        <div style="padding-top: 2%;" >
+                            <select id="teamSelectLeftEvent" style="padding: 1%">
+                                <option>Select Team 1</option>
+                            </select>
+                            <span>VS</span>
+                            <select id="teamSelectRightEvent" style="padding: 1%">
+                                <option>Select Team 2</option>
+                            </select>
+                        </div>
+                        <button class="save-event-btn" onclick="saveEvent()">Save Event</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="eventEditFormOverlay" class="form-overlay-events" style="display: none;">
+                <div class="event-info-form">
+                    <button class="close-btn" style="font-size: 35px; color: #ff5e5e;" onclick="closeEventEditFormOverlay()">×</button>
+                    <h2 style="font-size: 20px; padding-top: 3%;">Update Event for <span id="selectedDateDisplayEdit"></span></h2>
+                    <input type="text" id="eventTitleInputEdit" style="text-transform: capitalize;" placeholder="Event Title">
+                        <h2 id="datePropertyTitle" style="font-size: 20px; padding-top: 2%; display: none;">Select Date If Need To Update Date:</h2>
+                        <input type="date" id="dateUpdate" style="display: none;">
+                    
+                    <h2 style="font-size: 20px; padding-top: 2%;">Select Time:</h2>
+                    <input type="time" id="eventTimeInputEdit" style="text-transform: uppercase;">
+                    <div style="padding-top: 2%;">
+                        <select id="teamSelectLeftEventUpdate" style="padding: 1%">
+                            <option>Select Team 1</option>
+                        </select>
+                        <span>VS</span>
+                        <select id="teamSelectRightEventUpdate" style="padding: 1%">
+                            <option>Select Team 2</option>
+                        </select>
+                    </div>
+                    <button class="save-event-btn" onclick="saveUpdatedEvent()">Save Event</button>
+                </div>
+            </div>   
+
+            <!-- Records Section -->
+            <div id="recordsSection" style="display: none;">
+                <div style="overflow-x: auto;">
+                    <table id="recordsTable" border="1" style="width: 100%; border-collapse: collapse; font-size: 18px;">
+                        <thead>
+                            <tr style="position: sticky; top:0">
+                                <th>REFERENCE NO.</th>
+                                <th>BUYER NAME</th>
+                                <th>SCHEDULE DATE</th>
+                                <th>SCHEDULE TIME</th>
+                                <th>EVENT NAME</th>
+                                <th>SEAT</th>
+                                <th>QUANTITY</th>
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody" style="color: #ffffff;">
+                            <!-- Data will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>            
+
+            <!-- Player Info -->
+            <div id="playerSection" style="display: none;">
+                <button id="addPlayerButton" class="w3-button w3-round-large w3-border" style="float: right; background-color: rgba(0, 106, 255, 1)C; color: white;">ADD</button>
+                <br><br>
+                <table id="playerTable" border="1" style="width: 100%; margin-top: 10px; font-size: 18px;">
+                    <thead>
+                        <tr>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
+                            <th>PLAYER TEAM</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="playerTableBody" style="color: white;"></tbody>
+                </table>
+
+                <!-- Add/Edit Modal -->
+                <div id="playerModal" class="form-overlay">
+                    <div class="team-info-form">
+                        <h3 id="modalTitle" style="font-weight: bold;"></h3>
+                        <label for="firstName" style="font-size: 18px;"><b>Firstname </b></label>
+                            <input type="text" style="font-size: 18px; text-transform: capitalize;" id="firstName" required>
+                        <p style="padding-bottom: 1%;"></p>
+                         <label for="lastName" style="font-size: 18px;"><b>Lastname </b></label>
+                            <input type="text" style="font-size: 18px; text-transform: capitalize;" id="lastName" required>
+                        <br><br>
+                        <button class="w3-button w3-round-large w3-border" style="background-color: rgb(96, 151, 0); color: #fffdfd;" id="savePlayerButton">Save</button>
+                        <button class="w3-button w3-round-large w3-border" style="background-color: rgba(99, 99, 99, 1); color: #fffdfd;" id="cancelButton">Cancel</button>
+                    </div>
+                    
+                </div>        
+            </div>  
+        </div>
+    </div>
+    <script>
+        /// Variables
+        let editIndex = -1;
+        const eventsByDate = {};
+        document.getElementById("teamtitleSection").innerHTML = ` <center><p>HOME</p></center> `;
+
+        // Function to set the active section and display only that section
+        function setActiveSection(section) {
+            const header = document.getElementById("teamtitleSection");
+            header.innerHTML = "";
+            header.innerHTML = ` <center><p>HOME</p></center> `;
+
+            // Hide all main sections by default
+            document.getElementById("homeSection").style.display = 'none';
+            document.getElementById("teamsSection").style.display = 'none';
+            document.getElementById("ticketSection").style.display = 'none';
+            document.getElementById("bracketsSection").style.display = 'none';
+            document.getElementById("eventsSection").style.display = 'none';
+            document.getElementById("recordsSection").style.display = 'none';
+            document.getElementById("playerSection").style.display = 'none';
+
+            // Show the selected section
+            document.getElementById(section + "Section").style.display = 'block';
+
+            // Show specific content based on section
+            if (section === 'events') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>EVENTS</p></center>
+                `;
+                document.querySelector(".calendar-section").style.display = 'block';
+                updateCalendar();
+                initializeFilters();
+                setDefaultMonthYear();
+                displayUpcomingEvents();
+                fetchAndHighlightEventDates();
+            } else if (section === 'teams') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>TEAMS</p></center>
+                `;
+                fetchTeamsAndPlayers();
+                ;fetchTeams();
+            } else if (section === 'ticket') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>TICKETING</p></center>
+                `;
+            } else if (section === 'home') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>HOME</p></center>
+                `;
+                fetchAndDisplayMatchList();
+                fetchCurrentlyPlaying();
+            } else if (section === 'brackets') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>BRACKETING</p></center>
+                `;
+                loadMatches();
+            } else if (section === 'records') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>RECORDS</p></center>
+                `;
+                fetchRecords();
+            } else if (section === 'player') {
+                header.innerHTML = ""
+                header.innerHTML = `
+                    <center><p>PLAYERS</p></center>
+                `;
+                fetchPlayers();
+            }
+        }
+
+        // Variable to track the currently selected team index
+        let teams = [];
+        let allPlayers = [];
+        let selectedPlayers = 0;
+
+        // Fetch teams and players from the server
+        function fetchTeamsAndPlayers() {
+            teams = [];
+            fetch('fetchTeamPlayer.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        teams = data.teams;
+                        allPlayers = data.allPlayers;
+                        console.log(allPlayers)
+                        renderTeams();
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Render the team boxes
+        function renderTeams() {
+            const teamContainer = document.querySelector('.team-container');
+            teamContainer.innerHTML = ''; // Clear existing content
+
+            for (let teamId in teams) {
+                const team = teams[teamId];
+
+                const teamBox = document.createElement('div');
+                teamBox.classList.add('team-box');
+
+                // Cache-busting to ensure updated logos are shown
+                const timestamp = new Date().getTime();
+                const teamLogoSrc = `${team.logo}?t=${timestamp}`;
+
+                teamBox.innerHTML = `
+                    <img src="${teamLogoSrc}" height="70" width="70" alt="${team.name} Logo" class="team-logo">
+                    <h3 style="padding-left: 5%">${team.name}</h3>
+                `;
+
+                // Add an event listener to open the team form when clicked
+                teamBox.onclick = () => openTeamForm(teamId, false);
+
+                // Append the team box to the container
+                teamContainer.appendChild(teamBox);
+            }
+        }
+
+        let currentTeamId = null;
+
+        // Open the team info form when a team is selected
+        function openTeamForm(teamId, isEditMode = false) {
+            currentTeamId = teamId; 
+            const team = teams[teamId];
+
+            document.getElementById("teamNameDisplay").textContent = team.name;
+            document.getElementById("teamCoachDisplay").textContent = team.coach;
+            document.getElementById("teamNameInput").value = team.name;
+            document.getElementById("teamCoachInput").value = team.coach;
+
+            const logoContainer = document.getElementById("logoContainer");
+            logoContainer.innerHTML = `<img id="teamImagePreview" src="${team.logo}" style="width:150px; height:150px" alt="Team Logo" class="upload-icon" />`;
+
+            // Populate players list
+            const memberForm = document.getElementById("memberform");
+            memberForm.innerHTML = '';
+
+            if (team.players && team.players.length > 0) {
+                    if (!isEditMode) {
+                        // View mode: show only the team's players and positions in a single line
+                        team.players.forEach(player => {
+                            const playerBox = document.createElement('div');
+                            playerBox.classList.add('player-item');
+                            playerBox.style.display = 'flex';
+                            playerBox.style.justifyContent = 'space-between';
+                            playerBox.style.padding = '5px 0';
+
+                            playerBox.innerHTML = `
+                                <span style="flex: 1; font-weight: bold; padding-left: 45px">${player.name}</span>
+                                <span style="flex: 1; text-align: left; padding-left: 10px">${player.position || 'No Position'}</span>
+                            `;
+                            memberForm.appendChild(playerBox);
+                        });
+
+                        // Hide edit-related elements
+                        document.getElementById("playerSearchInput").style.display = "none";
+                    }
+                } else {
+                // Display message if no players are present
+                const noPlayersMessage = document.createElement('p');
+                noPlayersMessage.textContent = "No Player(s) in this Team.";
+                noPlayersMessage.style.textAlign = "center";
+                noPlayersMessage.style.color = "#888";
+                memberForm.appendChild(noPlayersMessage);
+            }
+
+            // Show the form overlay
+            document.getElementById("formOverlay").style.display = "block";
+            disableEditMode(); // Default to view mode
+        }
+
+        function enableEditPositionMode() {
+            if (!currentTeamId) {
+                alert("No team selected.");
+                return;
+            }
+
+            const team = teams[currentTeamId];
+            const memberForm = document.getElementById("memberform");
+
+            memberForm.innerHTML = ''; // Clear the current player list
+            team.players.forEach(player => {
+                const playerBox = document.createElement('div');
+                playerBox.classList.add('player-item');
+                playerBox.style.display = 'flex';
+                playerBox.style.alignItems = 'center';
+                playerBox.style.justifyContent = 'space-between';
+                playerBox.style.padding = '5px 0';
+
+                playerBox.innerHTML = `
+                    <span style="flex: 1; font-weight: bold;">${player.name}</span>
+                    <input 
+                        id="playerPositionInput_${player.player_id}" 
+                        type="text" 
+                        value="${player.position || ''}" 
+                        style="flex: 1; text-align: left; width:40%; padding: 5px; border: 1px solid #ccc; border-radius: 4px;" 
+                        placeholder="Enter Position"
+                    />
+                `;
+                memberForm.appendChild(playerBox);
+            });
+
+            // Show the "Save Positions" button and hide others
+            document.getElementById("PositioncancelBtn").style.display = "inline-block";
+            document.getElementById("editPositionBtn").style.display = "none";
+            document.getElementById("savePositionBtn").style.display = "inline-block";
+            document.getElementById("CloseBtn").style.display = "none";
+        }
+
+        function enableEditMode() {
+            if (!currentTeamId) {
+                console.error("No team selected.");
+                return;
+            }
+
+            const team = teams[currentTeamId];
+
+            // Existing logic for switching UI to edit mode
+            document.getElementById("editTeamBtn").style.display = "none";
+            document.getElementById("saveTeamBtn").style.display = "inline-block";
+            document.getElementById("InfocancelBtn").style.display = "inline-block";
+            document.getElementById("editPositionBtn").style.display = "none";
+            document.getElementById("savePositionBtn").style.display = "none";
+            document.getElementById("teamNameInput").style.display = "inline-block";
+            document.getElementById("teamCoachInput").style.display = "inline-block";
+            document.getElementById("teamNameDisplay").style.display = "none";
+            document.getElementById("teamCoachDisplay").style.display = "none";
+
+            const logoContainer = document.getElementById("logoContainer");
+            logoContainer.innerHTML = '';
+
+            const timestamp = new Date().getTime();
+            const teamLogoSrc = `${team.logo}?t=${timestamp}`;
+
+            const teamImagePreview = document.createElement('img');
+            teamImagePreview.id = 'teamImagePreview';
+            teamImagePreview.src = teamLogoSrc;
+            teamImagePreview.style.height = '150px';
+            teamImagePreview.style.width = '150px';
+            teamImagePreview.alt = 'Team Logo';
+            teamImagePreview.classList.add('upload-icon');
+            teamImagePreview.style.cursor = 'pointer';
+            logoContainer.appendChild(teamImagePreview);
+
+            const teamImageInput = document.createElement('input');
+            teamImageInput.type = 'file';
+            teamImageInput.id = 'teamImageInput';
+            teamImageInput.style.display = 'none';
+            teamImageInput.accept = 'image/*';
+
+            logoContainer.appendChild(teamImageInput);
+
+            teamImageInput.addEventListener('change', function (event) {
+                updateTeamImagePreview(event);
+            });
+
+            teamImagePreview.addEventListener('click', function () {
+                teamImageInput.click();
+            });
+
+            // Fetch players dynamically for the selected team
+            fetch(`fetchPlayerToSelect.php?teamId=${currentTeamId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const allPlayers = data.players;
+                        const currentTeamPlayers = data.currentTeamPlayers;
+
+                        const memberForm = document.getElementById("memberform");
+                        memberForm.innerHTML = '';
+                        memberForm.style.cssText = '';
+                        memberForm.style.cssText = 'max-height: 185px; overflow-y: auto;';
+                        memberForm.classList.add('members-container');
+
+                        allPlayers.forEach(player => {
+                            const isSelected = currentTeamPlayers.some(tPlayer => tPlayer.PLAYER_ID === player.PLAYER_ID);
+                            const checked = isSelected ? 'checked' : '';
+
+                            const playerBox = document.createElement('div');
+                            playerBox.classList.add('player-item');
+
+                            playerBox.innerHTML = `
+                                <input type="checkbox" class="player-checkbox" data-player-id="${player.PLAYER_ID}" ${checked} onchange="limitPlayerSelection(event)">
+                                <label style="font-size: 20px;"> ${player.PLAYER_NAME_INFO}</label>
+                            `;
+                            memberForm.appendChild(playerBox);
+                        });
+
+                        document.getElementById("playerSearchInput").style.display = "block";
+                        document.getElementById("CloseBtn").style.display = "none";
+                    } else {
+                        console.error("Failed to fetch players:", data.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching players:', error));
+        }
+
+        // Limit player selection
+        function limitPlayerSelection(event) {
+            const selected = document.querySelectorAll('.player-checkbox:checked').length;
+            if (selected > 12) {
+                alert("The team can only have 12 members.");
+                event.target.checked = false;
+            }
+        }
+
+        // This function will be triggered when a user selects an image file
+        function updateTeamImagePreview(event) {
+            const fileInput = event.target;
+            const previewImage = document.getElementById("teamImagePreview");
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;  
+                };
+
+                reader.readAsDataURL(fileInput.files[0]); 
+            }
+        }
+
+        function triggerImageUpload() {
+            document.getElementById("teamImageInput").click(); 
+        }
+
+        function updateTeamImagePreview(event) {
+            const fileInput = event.target;
+            const previewImage = document.getElementById("teamImagePreview");
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                };
+
+                reader.readAsDataURL(fileInput.files[0]); 
+            }
+        }
+
+        // Function to remove the image preview and the file input
+        function removeImageUpload() {
+            const logoContainer = document.getElementById("logoContainer");
+            const teamImageInput = document.getElementById("teamImageInput");
+
+            if (teamImageInput && logoContainer) {
+                logoContainer.removeChild(teamImageInput);
+            } 
+        }
+
+        function searchPlayers() {
+            const searchTerm = document.getElementById("playerSearchInput").value.toLowerCase();
+            const playerItems = document.querySelectorAll(".player-item");
+
+            let found = false;
+            playerItems.forEach(item => {
+                const playerName = item.querySelector("label").textContent.toLowerCase();
+                if (playerName.includes(searchTerm)) {
+                    item.style.display = "block";
+                    found = true;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            const noResultsMessage = document.getElementById("noResultsMessage");
+            noResultsMessage.style.display = found ? "none" : "block";
+        }
+
+        // Open the Add Team modal and reset the fields
+        function openAddTeamModal() {
+            // Show the modal
+            document.getElementById("addTeamModal").style.display = "block";
+            // Reset modal fields
+            document.getElementById("addTeamNameInput").value = '';
+            document.getElementById("addTeamCoachInput").value = '';
+            // Fetch and display players
+            fetchPlayersForAddModal();
+        }
+
+        // Preview selected team logo image
+        function previewTeamImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("addteamImagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Fetch players for the Add Team modal
+        function fetchPlayersForAddModal() {
+            fetch('teamInfo.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'actionType': 'fetchPlayers'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayPlayersInAddModal(data.players);
+                } else {
+                    console.error("Error fetching players:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching players:", error);
+            });
+        }
+
+        // Display players in the Add Team modal
+        function displayPlayersInAddModal(players) {
+            const memberForm = document.getElementById("addMemberForm");
+            memberForm.innerHTML = ''; // Clear previous content
+            memberForm.style.cssText = 'max-height: 185px; overflow-y: auto; font-size: 20px';
+
+            players.forEach(player => {
+                const playerItem = document.createElement('div');
+                playerItem.classList.add('player-item');
+
+                const playerCheckbox = document.createElement('input');
+                playerCheckbox.type = 'checkbox';
+                playerCheckbox.classList.add('player-checkbox');
+                playerCheckbox.setAttribute('data-player-id', player.PLAYER_ID);
+
+                const playerLabel = document.createElement('label');
+                playerLabel.textContent = " " + player.PLAYER_NAME;
+
+                playerItem.appendChild(playerCheckbox);
+                playerItem.appendChild(playerLabel);
+
+                memberForm.appendChild(playerItem);
+            });
+        }
+
+        // Search players in the Add Team modal
+        function searchPlayersInAddModal() {
+            const searchTerm = document.getElementById("addPlayerSearchInput").value.toLowerCase();
+            const playerItems = document.querySelectorAll("#addMemberForm .player-item");
+
+            let found = false;
+            playerItems.forEach(item => {
+                const playerName = item.querySelector("label").textContent.toLowerCase();
+                if (playerName.includes(searchTerm)) {
+                    item.style.display = "block";
+                    found = true;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            const noResultsMessage = document.getElementById("addNoResultsMessage");
+            noResultsMessage.style.display = found ? "none" : "block";
+        }
+
+        // Close the Add Team modal
+        function closeAddTeamModal() {
+            document.getElementById("addTeamModal").style.display = "none";
+            clearAddTeamModalFields();
+        }
+
+        // Save Team Information
+        function saveAddedTeamInfo() {
+            const teamName = document.getElementById("addTeamNameInput").value.trim();
+            const coachName = document.getElementById("addTeamCoachInput").value.trim();
+
+            if (!teamName || !coachName) {
+                alert("Please input the name of the team and the coach name first.");
+                return;
+            }
+
+            const selectedPlayers = [];
+            const playerCheckboxes = document.querySelectorAll('.player-checkbox');
+
+            playerCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedPlayers.push(checkbox.getAttribute('data-player-id'));
+                }
+            });
+
+            if (selectedPlayers.length === 0) {
+                alert("Please add players to the team.");
+                return;
+            }
+
+            // Form Data for submitting team info and players
+            const formData = new FormData();
+            formData.append('actionType', 'saveTeamInfo');
+            formData.append('teamName', teamName);
+            formData.append('coachName', coachName);
+            formData.append('selectedPlayers', JSON.stringify(selectedPlayers));
+
+            const teamImageInput = document.getElementById("teamImageAddInput");
+            const teamImageFile = teamImageInput.files[0];
+            if (teamImageFile) {
+                formData.append('teamLogo', teamImageFile);
+            }
+
+            // Check if the team name already exists
+            fetch('teamInfo.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'actionType': 'checkTeamName',
+                    'teamName': teamName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    alert("Team already added.");
+                    return;
+                }
+
+                // If no error, save team info
+                fetch('teamInfo.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert("Team added successfully!");
+
+                        // Fetch updated teams' data
+                        fetch('fetchTeams.php') // Adjust URL to your endpoint
+                            .then(response => response.json())
+                            .then(teamData => {
+                                if (teamData.status === 'success') {
+                                    teams = teamData.teams; // Update global teams variable
+                                    renderTeams(); // Re-render the teams in the frontend
+                                    fetchTeamsAndPlayers();
+                                } else {
+                                    console.error("Error fetching updated teams:", teamData.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error fetching teams:", error);
+                            });
+
+                        closeAddTeamModal(); // Close the modal
+                        clearAddTeamModalFields(); // Clear the modal fields
+                    } else {
+                        console.error("Error saving team info:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during save:", error);
+                });
+            });
+        }
+
+        // Clear input fields in the add modal
+        function clearAddTeamModalFields() {
+            document.getElementById("addTeamNameInput").value = '';
+            document.getElementById("addTeamCoachInput").value = '';
+            document.getElementById("addPlayerSearchInput").value = '';
+            document.getElementById("addNoResultsMessage").style.display = 'none';
+            const playerCheckboxes = document.querySelectorAll('.player-checkbox');
+            playerCheckboxes.forEach(checkbox => (checkbox.checked = false));
+            removeAddImageUpload();
+        }
+
+        function removeAddImageUpload() {
+            const logoPreview = document.getElementById("addteamImagePreview");
+            logoPreview.src = '';
+        }
+
+        function savePlayerPositions() {
+            if (!currentTeamId) {
+                console.error("No team selected.");
+                return;
+            }
+
+            const team = teams[currentTeamId];
+            const playerPositions = []; 
+
+            team.players.forEach(player => {
+                const positionInput = document.getElementById(`playerPositionInput_${player.player_id}`);
+                if (positionInput) {
+                    player.position = positionInput.value.trim() || ''; 
+                    playerPositions.push({
+                        player_id: player.player_id,
+                        position: player.position
+                    });
+                }
+            });
+
+            const formData = new FormData();
+            formData.append('actionType', 'savePlayerPositions'); 
+            formData.append('teamId', currentTeamId);
+            formData.append('playerPositions', JSON.stringify(playerPositions));
+
+            fetch('saveTeamInfo.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("Player positions updated successfully.");
+
+                    const memberForm = document.getElementById("memberform");
+                    memberForm.innerHTML = '';
+                    memberForm.classList.remove('members-container');
+                    memberForm.style.textAlign = 'left';
+                    memberForm.style.fontSize = '20px';
+                    memberForm.style.paddingLeft = '3%';
+
+                    // Update player list with aligned name and position
+                    team.players.forEach(player => {
+                        const playerBox = document.createElement('div');
+                        playerBox.classList.add('player-item');
+                        playerBox.style.display = 'flex';
+                        playerBox.style.justifyContent = 'space-between';
+                        playerBox.style.padding = '5px 0';
+
+                        playerBox.innerHTML = `
+                            <span style="flex: 1; font-weight: bold; padding-left: 45px">${player.name}</span>
+                            <span style="flex: 1; text-align: left; padding-left: 10px">${player.position || 'No Position'}</span>
+                        `;
+                        memberForm.appendChild(playerBox);
+                    });
+
+                    // Show appropriate buttons
+                    document.getElementById("editPositionBtn").style.display = "inline-block";
+                    document.getElementById("savePositionBtn").style.display = "none";
+                    document.getElementById("PositioncancelBtn").style.display = "none";
+                    document.getElementById("CloseBtn").style.display = "inline-block";
+                } else {
+                    console.error('Failed to update player positions:', data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function saveTeamInfo() { 
+            const teamId = currentTeamId;
+
+            if (!teamId) {
+                console.error("No team selected.");
+                return;
+            }
+
+            const teamName = document.getElementById("teamNameInput").value.trim();
+            const coachName = document.getElementById("teamCoachInput").value.trim();
+
+            if(!teamName || !coachName){
+                alert("Please Input field first.");
+                return;
+            }
+
+            const selectedPlayers = [];
+            const playerCheckboxes = document.querySelectorAll('.player-checkbox');
+            playerCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedPlayers.push(checkbox.getAttribute('data-player-id'));
+                }
+            });
+
+            if (selectedPlayers.length === 0) {
+                alert("Please add players to the team.");
+                return;  
+            }
+
+            const formData = new FormData();
+            formData.append('actionType', 'saveTeamInfo');
+            formData.append('teamId', teamId);
+            formData.append('teamName', teamName);
+            formData.append('coachName', coachName);
+            formData.append('selectedPlayers', JSON.stringify(selectedPlayers));
+
+            const teamImageInput = document.getElementById("teamImageInput");
+            const teamImageFile = teamImageInput.files[0];
+            if (teamImageFile) {
+                formData.append('teamLogo', teamImageFile || '');
+            }
+
+            fetch('saveTeamInfo.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("Team information saved successfully!");
+                    refetchTeamData(teamId);
+                    fetchCurrentlyPlaying();
+                    fetchAndDisplayMatchList();
+                    removeImageUpload();
+                    disableEditMode();  
+                } else {
+                    console.error("Error saving team info:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error during save:", error);
+            });
+        }
+
+        function refetchTeamData(teamId) {
+            fetch(`fetchTeamPlayer.php?teamId=${teamId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const updatedTeam = data.team;
+                        teams[teamId] = updatedTeam;  
+                        updateTeamFrontend();      
+                    } else {
+                        console.error("Error fetching updated team data:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during refetch:", error);
+                });
+        }
+
+        function updateTeamFrontend() {
+            if (!currentTeamId) {
+                console.error("No team selected.");
+                return;
+            }
+            const team = teams[currentTeamId];
+
+            // Update player positions
+            team.players.forEach(player => {
+                const positionInput = document.getElementById(`playerPositionInput_${player.player_id}`);
+                if (positionInput) {
+                    player.position = positionInput.value.trim() || '';
+                }
+            });
+
+            // Update logo container
+            const logoContainer = document.getElementById("logoContainer");
+            logoContainer.innerHTML = '';
+
+            // Append a timestamp to prevent browser caching of the image
+            const timestamp = new Date().getTime(); // Unique timestamp
+            const logoSrc = `${team.logo}?t=${timestamp}`; // Add query parameter to the logo path
+
+            logoContainer.innerHTML = `
+                <img 
+                    id="teamImagePreview" 
+                    src="${logoSrc}" 
+                    style="width:150px; height:150px" 
+                    alt="Team Logo" 
+                    class="upload-icon"
+                />
+            `;
+
+            // Update team name and coach
+            document.getElementById("teamNameDisplay").textContent = team.name;
+            document.getElementById("teamCoachDisplay").textContent = team.coach;
+            document.getElementById("teamNameInput").value = team.name;
+            document.getElementById("teamCoachInput").value = team.coach;
+
+            // Update member form
+            const memberForm = document.getElementById("memberform");
+            memberForm.innerHTML = '';
+            memberForm.classList.remove('members-container');
+            memberForm.style.textAlign = 'left';
+            memberForm.style.fontSize = '20px';
+            memberForm.style.paddingLeft = '3%';
+
+            team.players.forEach(player => {
+                const playerBox = document.createElement('div');
+                playerBox.classList.add('player-item');
+                playerBox.style.display = 'flex';
+                playerBox.style.justifyContent = 'space-between';
+                playerBox.style.padding = '5px 0';
+
+                playerBox.innerHTML = `
+                    <span style="flex: 1; font-weight: bold; padding-left: 45px">${player.name}</span>
+                    <span style="flex: 1; text-align: left; padding-left: 10px">${player.position || 'No Position'}</span>
+                `;
+                memberForm.appendChild(playerBox);
+            });
+        }
+
+        function disableEditMode() {
+            document.getElementById("editTeamBtn").style.display = "inline-block";
+            document.getElementById("saveTeamBtn").style.display = "none";
+            document.getElementById("InfocancelBtn").style.display = "none";
+            document.getElementById("CloseBtn").style.display = "inline-block";
+            document.getElementById("editPositionBtn").style.display = "inline-block";
+            document.getElementById("savePositionBtn").style.display = "none";
+            document.getElementById("teamNameInput").style.display = "none";
+            document.getElementById("teamCoachInput").style.display = "none";
+            document.getElementById("teamNameDisplay").style.display = "inline-block";
+            document.getElementById("teamCoachDisplay").style.display = "inline-block";
+            document.getElementById("playerSearchInput").style.display = "none";
+            fetchTeamsAndPlayers();
+
+            const playerCheckboxes = document.querySelectorAll('.player-checkbox');
+            playerCheckboxes.forEach(checkbox => {
+                checkbox.style.display = "none";
+            });
+        }
+
+        function cancelOperation() {
+            document.getElementById("PositioncancelBtn").style.display = "none";
+            document.getElementById("editPositionBtn").style.display = "inline-block";
+            document.getElementById("savePositionBtn").style.display = "none";
+            document.getElementById("editTeamBtn").style.display = "inline-block";
+            document.getElementById("saveTeamBtn").style.display = "none";
+            document.getElementById("InfocancelBtn").style.display = "none";
+            document.getElementById("CloseBtn").style.display = "inline-block";
+            refetchTeamData(currentTeamId);
+            fetchCurrentlyPlaying();
+            fetchAndDisplayMatchList();
+            removeImageUpload();
+            disableEditMode();  
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchTeamsAndPlayers();
+        });
+
+        // Function to close the form overlay
+        function closeFormOverlay() {
+            document.getElementById("formOverlay").style.display = "none";
+        }
+
+        function fetchCurrentlyPlaying() {
+            fetch('fetchTeams.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === "success") {
+                        // Update team names
+                        document.querySelector(".team-display-left").textContent = data.data.TEAM_1_NAME;
+                        document.querySelector(".team-display-right").textContent = data.data.TEAM_2_NAME;
+
+                        // Update team logos
+                        const logoImage1 = document.querySelector(".team-logo-1"); // Select single image element for TEAM_1
+                        const logoImage2 = document.querySelector(".team-logo-2"); // Select single image element for TEAM_2
+
+                        // Set the image sources to the fetched logos
+                        logoImage1.src = data.data.TEAM_1_LOGO; // Use a default logo if none is provided
+                        logoImage2.src = data.data.TEAM_2_LOGO;
+                    } else {
+                        alert(data.message || "Failed to fetch teams.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching currently playing teams:", error);
+                    alert("Error fetching data.");
+                });
+        }
+        fetchCurrentlyPlaying();
+
+        function fetchAndDisplayMatchList() {
+            fetch('matchHandler.php?action=getMatches')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success" && Array.isArray(data.matches)) {
+                        const matchList = document.getElementById("matchList");
+                        matchList.innerHTML = ''; // Clear existing match list
+
+                        data.matches.forEach((match, index) => {
+                            const matchItem = document.createElement("div");
+                            matchItem.className = "match-item";
+
+                            // Alternate background color based on index
+                            matchItem.style.backgroundColor = index % 2 === 0 ? "#323131" : "#3c3c3c";
+
+                            // Determine winner and loser styles
+                            const team1Class = match.TEAM_1_SCORE > match.TEAM_2_SCORE ? "winner" : "loser";
+                            const team2Class = match.TEAM_2_SCORE > match.TEAM_1_SCORE ? "winner" : "loser";
+
+                            matchItem.innerHTML = `
+                                <div class="match-item-content">
+                                    <!-- Team 1 Logo -->
+                                    <div class="logo-container">
+                                        <img src="${match.TEAM1_LOGO}" alt="${match.TEAM_1}" class="team-logo">
+                                    </div>
+
+                                    <!-- Team 1 Name -->
+                                    <div class="team-name ${team1Class}">${match.TEAM_1}</div>
+
+                                    <!-- VS Label -->
+                                    <div class="vs-label">VS</div>
+
+                                    <!-- Team 2 Name -->
+                                    <div class="team-name ${team2Class}">${match.TEAM_2}</div>
+
+                                    <!-- Team 2 Logo -->
+                                    <div class="logo-container">
+                                        <img src="${match.TEAM2_LOGO}" alt="${match.TEAM_2}" class="team-logo">
+                                    </div>
+
+                                    <!-- Scores -->
+                                    <div class="score ${team1Class}">${match.TEAM_1_SCORE}</div>
+                                    <div class="separator">|</div>
+                                    <div class="score ${team2Class}">${match.TEAM_2_SCORE}</div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="action-buttons">
+                                        <button class="edit-match" onclick="openEditMatchSlide(${match.GAME_SCORE_ID})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-match" onclick="deleteMatch(${index}, ${match.GAME_SCORE_ID})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            matchList.appendChild(matchItem); // Add new match item to the match list
+                        });
+                    } else {
+                        console.error("Failed to load match list");
+                    }
+                })
+                .catch(error => console.error("Error fetching match list:", error));
+        }
+        fetchAndDisplayMatchList();
+
+        // Function to open the add slide with empty fields on match list with score
+        function openAddSlide() {
+            teamOptions = [];
+            fetchTeams();
+            document.getElementById("scoreLeft").style.display = "block";
+            document.getElementById("scoreRight").style.display = "block";
+            editIndex = -1; // Indicates this is an add operation
+
+            // Reset fields
+            document.getElementById("teamSelectLeft").value = "Select Team 1";
+            document.getElementById("teamSelectRight").value = "Select Team 2";
+            document.getElementById("scoreLeft").value;
+            document.getElementById("scoreRight").value;
+
+            // Update dropdown options and disable already selected teams
+            updateSelectOptions(teamOptions);
+
+            // Change the Save button's onclick function to saveAddUpdateChanges
+            const saveButton = document.querySelector(".save-btn");
+            saveButton.setAttribute("onclick", "saveAddUpdateChanges()");
+
+            // Display the modal
+            document.getElementById("editSlide").style.display = "flex";
+        }
+
+        // for adding and updating game score list
+        function saveAddUpdateChanges(matchId) {
+            const teamLeft = document.getElementById("teamSelectLeft").value;
+            const teamRight = document.getElementById("teamSelectRight").value;
+            const scoreLeft = document.getElementById("scoreLeft").value;
+            const scoreRight = document.getElementById("scoreRight").value;
+
+            if (!teamLeft || !teamRight || teamLeft === "Select Team 1" || teamRight === "Select Team 2" || scoreLeft === "" || scoreRight === "") {
+                alert("All fields are required. Please fill in all fields before saving.");
+                return; 
+            }
+
+            const data = {
+                teamLeft,
+                teamRight,
+                scoreLeft,
+                scoreRight,
+                matchId: matchId || null
+            };
+
+            fetch('matchHandler.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === "success") {
+                        alert(result.message);
+                        closeEditAddSlide();
+                        location.reload(); 
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => console.error("Error saving match:", error));
+        }
+
+        function openEditMatchSlide(matchId) {
+            teamOptions = [];
+            fetchTeams();
+            // Ensure score inputs are visible
+            document.getElementById("scoreLeft").style.display = "block";
+            document.getElementById("scoreRight").style.display = "block";
+
+            fetch(`matchHandler.php?action=getMatches&id=${matchId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.match); // Debugging line to verify the match data
+
+                    if (data.status === "success" && data.match) {
+                        // Populate the form with match data for editing
+                        document.getElementById("teamSelectLeft").value = data.match.TEAM_1_NAME;
+                        document.getElementById("teamSelectRight").value = data.match.TEAM_2_NAME;
+                        document.getElementById("scoreLeft").value = data.match.TEAM_1_SCORE;
+                        document.getElementById("scoreRight").value = data.match.TEAM_2_SCORE;
+                        updateSelectOptions(teamOptions);
+
+                        // Update the save button's onclick handler dynamically
+                        const saveButton = document.querySelector(".save-btn");
+                        saveButton.onclick = () => saveAddUpdateChanges(matchId);
+
+                        // Show the modal
+                        document.getElementById("editSlide").style.display = "flex";
+                    } else {
+                        console.error(data.message || "Failed to load match data for editing");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching match data:", error);
+                });
+        }
+
+        // Open the edit slide
+        function openEditSlide(index) {
+            fetchTeams().then(() => {
+                editIndex = index;
+
+                if (index === 'header') {
+                    document.getElementById("scoreLeft").style.display = "none";
+                    document.getElementById("scoreRight").style.display = "none";
+
+                    // Get current team names
+                    const leftTeam = document.querySelector(".team-display-left").textContent.trim();
+                    const rightTeam = document.querySelector(".team-display-right").textContent.trim();
+
+                    // Set dropdown values
+                    setSelectedValue("teamSelectLeft", leftTeam);
+                    setSelectedValue("teamSelectRight", rightTeam);
+                } else {
+                    document.getElementById("scoreLeft").style.display = "block";
+                    document.getElementById("scoreRight").style.display = "block";
+
+                    // Get match-specific data
+                    const matchItem = document.querySelectorAll(".match-item")[index];
+                    const leftTeam = matchItem.querySelector(".team-left").textContent.trim();
+                    const rightTeam = matchItem.querySelector(".team-right").textContent.trim();
+                    const scoreLeft = matchItem.querySelector(".score-left").textContent.trim();
+                    const scoreRight = matchItem.querySelector(".score-right").textContent.trim();
+
+                    // Set dropdown and input values
+                    setSelectedValue("teamSelectLeft", leftTeam);
+                    setSelectedValue("teamSelectRight", rightTeam);
+                    document.getElementById("scoreLeft").value = scoreLeft;
+                    document.getElementById("scoreRight").value = scoreRight;
+                }
+
+                const saveButton = document.querySelector(".save-btn");
+                saveButton.setAttribute("onclick", "saveChanges()");
+
+                document.getElementById("editSlide").style.display = "flex";
+            });
+        }
+
+        // Helper function to set the selected value in a dropdown
+        function setSelectedValue(selectId, value) {
+            const select = document.getElementById(selectId);
+            const options = select.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].textContent.trim() === value) {
+                    options[i].selected = true;
+                    return;
+                }
+            }
+        }
+
+        // Save changes and update the database for currently playing game
+        function saveChanges() {
+            const teamLeft = document.getElementById("teamSelectLeft").value;
+            const teamRight = document.getElementById("teamSelectRight").value;
+            const scoreLeft = document.getElementById("scoreLeft").value || 0;
+            const scoreRight = document.getElementById("scoreRight").value || 0;
+
+            if (teamLeft === "Select Team 1" || teamRight === "Select Team 2") {
+                alert("Please select both teams.");
+                return;
+            }
+
+            const payload = {
+                teamLeft,
+                teamRight
+            };
+
+            fetch('fetchAndUpdateTeams.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("Match updated successfully!");
+                        closeEditAddSlide();
+                        window.location.reload();
+                    } else {
+                        alert(data.message || "Failed to update match.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating match:", error);
+                });
+        }
+
+        // Close and Clear Input field the edit slide
+        function closeEditAddSlide() {
+            const editSlide = document.getElementById("editSlide");
+            editSlide.style.display = "none";
+
+            // Reset all input fields and selects within the form
+            const form = editSlide.querySelector("form");
+            if (form) {
+                form.reset();
+            }
+
+            // Reset select dropdowns to default option
+            document.getElementById("teamSelectLeft").value = "Select Team 1";
+            document.getElementById("teamSelectRight").value = "Select Team 2";
+
+            // Clear the score fields
+            document.getElementById("scoreLeft").value = "";
+            document.getElementById("scoreRight").value = "";
+        }
+
+        let teamOptions = [];
+        function fetchTeams() {
+            return fetch('fetchAndUpdateTeams.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Fetched teams data:", data);
+                    if (data.status === "success" && Array.isArray(data.teams)) {
+                        teamOptions = data.teams;
+
+                        const selectedTeamLeft = document.querySelector(".team-display-left").textContent.trim();
+                        const selectedTeamRight = document.querySelector(".team-display-right").textContent.trim();
+                        const leftSelect = document.getElementById("teamSelectLeft");
+                        const rightSelect = document.getElementById("teamSelectRight");
+
+                        leftSelect.value = selectedTeamLeft || "Select Team 1";
+                        rightSelect.value = selectedTeamRight || "Select Team 2";
+
+                        updateSelectOptions(teamOptions);
+                    } else {
+                        console.error("Invalid teams data:", data);
+                    }
+                })
+                .catch(error => console.error("Error fetching teams:", error));
+        }
+
+        function updateSelectOptions(teams) {
+            const leftSelect = document.getElementById("teamSelectLeft");
+            const rightSelect = document.getElementById("teamSelectRight");
+
+            const selectedTeamLeft = leftSelect.value;
+            const selectedTeamRight = rightSelect.value;
+
+            leftSelect.innerHTML = '<option>Select Team 1</option>';
+            rightSelect.innerHTML = '<option>Select Team 2</option>';
+
+            teams.forEach(team => {
+                const leftOption = document.createElement("option");
+                const rightOption = document.createElement("option");
+
+                leftOption.textContent = team;
+                leftOption.value = team;
+
+                rightOption.textContent = team;
+                rightOption.value = team;
+
+                if (team === selectedTeamRight && leftSelect.value !== team) {
+                    leftOption.disabled = true;
+                }
+                if (team === selectedTeamLeft && rightSelect.value !== team) {
+                    rightOption.disabled = true;
+                }
+
+                leftSelect.appendChild(leftOption);
+                rightSelect.appendChild(rightOption);
+            });
+
+            leftSelect.value = selectedTeamLeft || "Select Team 1";
+            rightSelect.value = selectedTeamRight || "Select Team 2";
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchTeams();
+        });
+
+        document.getElementById("teamSelectLeft").addEventListener("change", function () {
+            console.log("Left Team Selected:", this.value);
+            updateSelectOptions(teamOptions); 
+        });
+
+        document.getElementById("teamSelectRight").addEventListener("change", function () {
+            console.log("Right Team Selected:", this.value);
+            updateSelectOptions(teamOptions); 
+        });
+
+        // Delete match
+        function deleteMatch(index, gameScoreId) {
+            const matchList = document.getElementById("matchList");
+            const matchItems = document.querySelectorAll(".match-item");
+            const matchItem = matchItems[index]; // Find the match item based on index
+
+            if (!matchItem) {
+                console.error("Match item not found at index:", index);
+                return;
+            }
+
+            // Confirm deletion
+            if (!confirm("Are you sure you want to delete this match?")) {
+                return;
+            }
+
+            // Send request to delete the match from the database
+            fetch(`matchHandler.php?action=deleteMatch&id=${gameScoreId}`, {
+                method: "DELETE"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Remove the match from the UI
+                        matchList.removeChild(matchItem);
+
+                        // Update data-index attributes for remaining matches
+                        const remainingItems = document.querySelectorAll(".match-item");
+                        remainingItems.forEach((item, i) => {
+                            item.setAttribute("data-index", i);
+                            item.querySelector(".edit-match").setAttribute("onclick", `openEditMatchSlide(${item.getAttribute("data-id")})`);
+                            item.querySelector(".delete-match").setAttribute("onclick", `deleteMatch(${i}, ${item.getAttribute("data-id")})`);
+                        });
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message || "Failed to delete match.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting match:", error);
+                    alert("An error occurred while deleting the match.");
+                });
+        }
+        
+        /* TICKETING */
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeFilters();
+        });
+
+        // Initialize month and year dropdowns
+        function initializeFilters() {
+            const today = new Date();
+            const monthDropdown = document.getElementById("monthTicketingDropdown");
+            const yearDropdown = document.getElementById("yearTicketingDropdown");
+
+            // Populate month dropdown
+            for (let m = 1; m <= 12; m++) {
+                const option = document.createElement("option");
+                option.value = m;
+                option.textContent = new Date(0, m - 1).toLocaleString("default", { month: "long" });
+                if (m === today.getMonth() + 1) option.selected = true;
+                monthDropdown.appendChild(option);
+            }
+
+            // Populate year dropdown
+            for (let y = today.getFullYear() - 5; y <= today.getFullYear() + 5; y++) {
+                const option = document.createElement("option");
+                option.value = y;
+                option.textContent = y;
+                if (y === today.getFullYear()) option.selected = true;
+                yearDropdown.appendChild(option);
+            }
+
+            // Add event listeners
+            monthDropdown.addEventListener("change", fetchInitialData);
+            yearDropdown.addEventListener("change", fetchInitialData);
+
+            // Fetch events for the initial selection
+            fetchInitialData();
+        }
+
+        // Fetch initial data from the PHP backend
+        function fetchInitialData() {
+            const month = document.getElementById("monthTicketingDropdown").value;
+            const year = document.getElementById("yearTicketingDropdown").value;
+            updateTableData()
+
+            // Fetch events for the selected month and year
+            fetch("ticketinghandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `actionType=getFilteredEvents&month=${month}&year=${year}`,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    if (data.events.length > 0) {
+                        populateEventDropdown(data.events);
+                    } else {
+                        let nulldata = "";
+                        populateEventDropdown(nulldata);
+                    }
+                });
+        }
+
+        // Populate event dropdown and load initial table data
+        function populateEventDropdown(events) {
+            const ticketTable = document.getElementById("ticketTable");
+            ticketTable.style.display = "none";
+            document.getElementById("detailsSection").innerHTML = `
+                <center><p id="detailsText">TICKET DETAILS WILL SHOW HERE.</p></center>
+            `;
+            const eventDropdown = document.getElementById("eventDropdown");
+            const eventdivDropdown = document.getElementById("eventdropdowndiv");
+            eventDropdown.innerHTML = ""; // Clear existing options
+            const noResultsMessage = document.getElementById("noTicketingResultsMessage");
+            
+            if(events){
+                noResultsMessage.style.display = "none";
+                eventdivDropdown.style.display = 'inline-block';
+                events.forEach((event) => {
+                    const option = document.createElement("option");
+                    option.value = event.SCHED_ID;
+                    option.textContent = event.EVENT_DISPLAY;
+                    eventDropdown.appendChild(option);
+                });
+            } else {
+                ticketTable.style.display = "none";
+                eventDropdown.innerHTML = "";
+                eventdivDropdown.style.display = 'none';
+                noResultsMessage.style.display = "block";
+                
+            }
+            
+            // Automatically select the first option
+            if (events.length > 0) {
+                eventDropdown.selectedIndex = 0;
+                setTimeout(() => {
+                    updateTableData(); 
+                }, 100);
+            }
+
+            // Add event listener
+            eventDropdown.addEventListener("change", updateTableData);
+        }
+
+        let tableData = [];
+        // Fetch table data based on selected filters
+        function updateTableData() {
+            const ticketTable = document.getElementById("ticketTable");
+            ticketTable.style.display = "none";
+            const month = document.getElementById("monthTicketingDropdown").value;
+            const year = document.getElementById("yearTicketingDropdown").value;
+            const schedId = document.getElementById("eventDropdown").value;
+
+            fetch("ticketinghandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `actionType=getTableData&schedId=${schedId}`,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    tableData = data.tableData || null;
+                    populateTable()
+                    .then(() => {
+                        setTimeout(() => {
+                            updatePieChart();
+                        }, 150);
+                    });
+                    
+                } else {
+                    console.error("Failed to fetch table data.");
+                }
+            });
+        }
+
+        // Populate table with fetched data
+        function populateTable() {
+            return new Promise((resolve) => {
+                const noResultsMessage = document.getElementById("noTicketingResultsMessage");
+                const tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = ""; // Clear existing rows
+
+                document.getElementById("detailsSection").innerHTML = `
+                    <center><p id="detailsText">TICKET DETAILS WILL SHOW HERE.</p></center>
+                `;
+
+                noResultsMessage.style.display = "none"; // Hide "no results" message
+                if (tableData) {
+                    tableData.forEach((row, index) => {
+                        const tr = document.createElement("tr");
+                        tr.dataset.referenceNo = row.REFERENCE_NO;
+
+                        // Alternate row background colors
+                        tr.style.backgroundColor = index % 2 === 0 ? "rgb(44, 44, 44)" : "rgb(76, 76, 76)";
+                        tr.style.color = "white"; // Ensure text is visible on dark backgrounds
+
+                        tr.innerHTML = `
+                            <td style="cursor: pointer" class="hovertickettble">${row.REFERENCE_NO}</td>
+                            <td style="cursor: pointer" class="hovertickettble">${row.BUYER_NAME}</td>
+                        `;
+
+                        tr.addEventListener("click", () => {
+                            fetchRowDetails(row.REFERENCE_NO);
+                        });
+
+                        tableBody.appendChild(tr);
+                    });
+                    applySearchFilter();
+                } else {
+                    tableBody.innerHTML = "";
+                    noResultsMessage.style.display = "none";
+                }
+                resolve();
+            });
+        }
+
+        document.getElementById("searchInput").addEventListener("input", applySearchFilter);
+
+        function applySearchFilter() {
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#ticketTable tbody tr");
+            const noResultsMessage = document.getElementById("noTicketingResultsMessage");
+            const ticketTable = document.getElementById("ticketTable");
+            let resultsFound = false;
+
+            rows.forEach(function (row) {
+                const referenceNo = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                const buyerName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+
+                if (referenceNo.includes(searchQuery) || buyerName.includes(searchQuery)) {
+                    row.style.display = ""; 
+                    ticketTable.style.display = "";
+                    resultsFound = true;
+                } else {
+                    row.style.display = "none"; 
+                    ticketTable.style.display = "none";
+                    document.getElementById("detailsSection").innerHTML = `
+                        <center><p id="detailsText">TICKET DETAILS WILL SHOW HERE.</p></center>
+                    `;
+                }
+            });
+
+            // If no rows match the search query, show no results message
+            if (resultsFound) {
+                noResultsMessage.style.display = "none";
+            } else {
+                noResultsMessage.style.display = "block";
+            }
+        }
+
+        // Fetch ticket counts for pie chart
+        function updatePieChart() {
+            const schedId = document.getElementById("eventDropdown").value;
+            let schedno;
+            if(!schedId){
+                schedno = 0;
+            } else {
+                schedno = schedId;
+            }
+
+            fetch("ticketinghandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `actionType=getTicketCounts&schedId=${schedno}`,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    renderPieChart(data.counts);
+                } else {
+                    renderPieChart({ "Upperbox": 0, "Lowerbox": 0, "TOTAL": 0 }); // Reset chart on failure
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching chart data:", error);
+                renderPieChart({ "Upperbox": 0, "Lowerbox": 0, "TOTAL": 0 }); // Reset chart on error
+            });
+        }
+
+        // Render pie chart using Chart.js
+        function renderPieChart(counts) {
+            const ctx = document.getElementById("pieChart").getContext("2d");
+
+            // Check if all counts are zero
+            const upperBoxCount = counts["Upperbox"] || 0;
+            const lowerBoxCount = counts["Lowerbox"] || 0;
+            const totalCount = upperBoxCount + lowerBoxCount;
+
+            const chartData = {
+                datasets: [
+                    {
+                        data: totalCount === 0 ? [1, 1] : [upperBoxCount, lowerBoxCount], // Fallback to render a full circle
+                        backgroundColor: totalCount === 0 ? ["rgba(89, 151, 176, 1)", "rgba(144, 186, 205, 1)"] : ["rgba(89, 151, 176, 1)", "rgba(144, 186, 205, 1)"], // Gray colors for empty data
+                    },
+                ],
+            };
+
+            if (window.pieChartInstance) {
+                window.pieChartInstance.destroy(); // Destroy previous chart instance
+            }
+
+            window.pieChartInstance = new Chart(ctx, {
+                type: "pie",
+                data: chartData,
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false, // Hide the legend above the chart
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    if (totalCount === 0) {
+                                        return "No data available"; // Tooltip text for empty data
+                                    }
+                                    const labels = ["UPPERBOX", "LOWERBOX"]; // Define labels for the tooltip
+                                    const label = labels[tooltipItem.dataIndex];
+                                    const value = tooltipItem.raw;
+                                    return `${label}: ${value} Tickets`;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            // Update legend with the counts
+            document.getElementById("upperCount").textContent = counts["Upperbox"] || 0;
+            document.getElementById("lowerCount").textContent = counts["Lowerbox"] || 0;
+            document.getElementById("totalCount").textContent = counts["TOTAL"] || 0;
+        }
+
+        // Fetch and display details of the selected row
+        function fetchRowDetails(referenceNo) {
+            fetch("ticketinghandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `actionType=getSelectedRowDetails&referenceNo=${referenceNo}`,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === "success") {
+                        displayDetails(data.details);
+                    } else {
+                        document.getElementById("detailsSection").innerHTML = `
+                            <center><p id="detailsText">TICKET DETAILS WILL SHOW HERE.</p></center>
+                        `;
+                        console.error("Failed to fetch row details.");
+                    }
+                });
+        }
+
+        // Display details in the lower section
+        function displayDetails(details) {
+            document.getElementById("detailsSection").innerHTML = `
+                <center><h3><b>TICKET DETAILS</b></h3></center>
+                <p><b>BUYER NAME:</b> ${details.BUYER_NAME}</p>
+                <p><b>EVENT NAME:</b> ${details.EVENT_NAME}</p>
+                <p><b>TEAM:</b> ${details.TEAM_1} VS ${details.TEAM_2}</p>
+                <p><b>SEAT:</b> ${details.SEAT}</p>
+                <p><b>QUANTITY:</b> ${details.QUANTITY}</p>
+                <p><b>TOTAL:</b> ₱${details.TOTAL}</p>
+            `;
+        }
+
+        //----------------------------------------
+        //BRACKETING
+        let bracketingdata = []
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('fetchMatches.php')
+                .then(response => response.json())
+                .then(data => 
+                    {   console.log(data);
+                        bracketingdata = data;
+                        renderBracket(data)
+                    })
+                .catch(error => console.error('Error fetching matches:', error));
+        });
+
+        function loadMatches(){
+            fetch('fetchMatches.php')
+                .then(response => response.json())
+                .then(data => 
+                    { 
+                        bracketingdata = data;
+                        renderBracket(data)
+                    })
+                .catch(error => console.error('Error fetching matches:', error));
+        }
+
+        function refetchMatchesData() {
+            fetch('fetchMatches.php')
+                .then(response => response.json())
+                .then(data => 
+                    {   console.log(data);
+                        bracketingdata = data;
+                        renderBracket(data)
+                    })
+                .catch(error => console.error('Error fetching matches:', error));
+        }
+
+        function renderBracket(matches) {
+            const container = document.getElementById('bracket-container');
+            container.innerHTML = '';
+
+            let quarterFinals = matches.filter(match => match.ROUND_STATUS === 'QUARTER FINALS' && [1, 2, 3, 4].includes(parseInt(match.MATCHES_ID)));
+            let semiFinals = matches.filter(match => match.ROUND_STATUS === 'SEMI FINALS' && [5, 6].includes(parseInt(match.MATCHES_ID)));
+            let finals = matches.filter(match => match.ROUND_STATUS === 'FINALS' && [7].includes(parseInt(match.MATCHES_ID)));
+
+            // Render Quarter Finals
+            let quarterHtml = `
+                <div class="round" id="quarter-finals">
+                    <h2>Quarter Finals <span style="padding-top: 2%"><button class="edit-btn"  onclick="openModal('QUARTER FINALS')">✎</button></span></h2>
+                    ${quarterFinals.map(match => `
+                        <div class="match">
+                            <span class="team">${match.TEAM1_NAME || 'NO TEAM'}</span>
+                            <p style="color: white">VS</p>
+                            <span class="team">${match.TEAM2_NAME || 'NO TEAM'}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-1"></span>
+                    <span class="horizontal-line-2"></span>
+                </div>
+            `;
+
+            // Render Semi Finals
+            let semiFinalHtml = `
+                <div class="round" id="semi-finals">
+                    <h2>Semi Finals <button class="edit-btn" onclick="openModal('SEMI FINALS')">✎</button></h2>
+                    ${semiFinals.map(match => `
+                        <div class="match">
+                            <span class="team">${match.TEAM1_NAME || 'WINNER'}</span>
+                            <p style="color: white">VS</p>
+                            <span class="team">${match.TEAM2_NAME || 'WINNER'}</span>
+                        </div>
+                    `).join('<div style="margin-bottom: 150px;"></div>')}
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-3"></span>
+                </div>
+            `;
+
+            // Render Finals
+            let finalsHtml = `
+                <div class="round" id="finals">
+                    <h2>Finals <button class="edit-btn" onclick="openModal('FINALS')">✎</button></h2>
+                    <div class="match">
+                        <span class="team">${finals[0]?.TEAM1_NAME || 'FINALIST'}</span>
+                        <p style="color: white">VS</p>
+                        <span class="team">${finals[0]?.TEAM2_NAME || 'FINALIST'}</span>
+                    </div>
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-4"></span>
+                </div>
+
+                <div class="round" id="champion">
+                    <h2>Champion <button class="edit-btn" onclick="openModal('CHAMPION')">✎</button></h2>
+                    <div class="match">
+                        <span class="team champion">${finals[0]?.WINNER_TEAM_NAME || 'CHAMP'}</span>
+                    </div>
+                </div>
+            `;
+
+            // Combine and inject HTML into the container
+            container.innerHTML = quarterHtml + semiFinalHtml + finalsHtml;
+        }
+
+        let roundstat = '';
+        // Update this part to handle dynamic form population in modals
+        function openModal(round) {
+            console.log(`Opening modal for: ${round}`);
+            roundstat = '';
+            roundstat = round;
+            const modal = document.getElementById('edit-modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = `EDIT ${round}`;
+            fetch(`bracketActions.php?actiontype=fetchTeams`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.matches.length) {
+                    const form = document.getElementById('edit-form');
+                    form.innerHTML = generateForm(round, data);
+                    modal.style.display = 'block';
+                } else {
+                    alert('No matches found for this round!');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Failed to load match data.');
+            });
+        }
+
+        function savebracketChanges() {
+            const form = document.getElementById('edit-form');
+            if (!form) {
+                alert('No form data available to save.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            formData.append('round', roundstat);
+
+            // Validate form inputs
+            let isValid = true;
+
+            if (roundstat === 'QUARTER FINALS') {
+                // Collect team selections
+                const teamSelections = {}; // To store selected team IDs and their corresponding match info
+                const teamNames = {}; // To map team IDs to their names for alert messages
+
+                for (let matchId = 1; matchId <= 4; matchId++) {
+                    const team1 = formData.get(`TEAM1_${matchId}`);
+                    const team2 = formData.get(`TEAM2_${matchId}`);
+                    const team1Name = document.querySelector(`#TEAM1_${matchId} option[value="${team1}"]`)?.textContent.trim();
+                    const team2Name = document.querySelector(`#TEAM2_${matchId} option[value="${team2}"]`)?.textContent.trim();
+
+                    // Check if both teams are selected
+                    if (!team1 || !team2) {
+                        alert(`Please select both teams for MATCH ${matchId}.`);
+                        isValid = false;
+                        break;
+                    }
+
+                    // Check for duplicate team selections
+                    if (teamSelections[team1]) {
+                        alert(`The team "${team1Name}" is already chosen in ${teamSelections[team1]}.`);
+                        isValid = false;
+                        break;
+                    }
+                    if (teamSelections[team2]) {
+                        alert(`The team "${team2Name}" is already chosen in ${teamSelections[team2]}.`);
+                        isValid = false;
+                        break;
+                    }
+
+                    // Store the selected teams
+                    teamSelections[team1] = `TEAM1 in MATCH ${matchId}`;
+                    teamSelections[team2] = `TEAM2 in MATCH ${matchId}`;
+                    teamNames[team1] = team1Name;
+                    teamNames[team2] = team2Name;
+                }
+            }
+
+            if (!isValid) {
+                return; // Stop further processing if validation fails
+            }
+
+            // Perform the AJAX request
+            fetch('bracketActions.php?actiontype=updateMatches', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Changes saved successfully!');
+                        closeModal();
+                        refetchMatchesData(); // Refresh the bracket data
+                    } else {
+                        alert(data.message || 'Failed to save changes.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error saving changes:', err);
+                    alert('An error occurred while saving changes.');
+                });
+        }
+
+        // Generate form for teams, dynamically based on match information
+        function generateForm(round, data) {
+            let formHtml = '';
+
+            if (round === 'QUARTER FINALS') {
+                formHtml += generateQuarterFinalForm(data.teams, data.matches);
+            } else if (round === 'SEMI FINALS') {
+                formHtml += generateSemiFinalForm(data.matches);
+            } else if (round === 'FINALS') {
+                formHtml += generateFinalsForm(data.matches);
+            } else if (round === 'CHAMPION') {
+                formHtml += generateChampionForm(data.matches);
+            }
+            return formHtml;
+        }
+
+        function generateQuarterFinalForm(teams, matches) {
+            teams = teams || [];
+            matches = matches || [];
+
+            return `
+                ${[1, 2, 3, 4].map(matchId => {
+                    const match = matches[matchId - 1] || {}; // Match data for current match ID
+                    return `
+                        <div>
+                            <p><b>MATCH ${matchId}</b></p>
+                            <label for="TEAM1_${matchId}"><b>TEAM 1</b></label>
+                            <select id="TEAM1_${matchId}" name="TEAM1_${matchId}">
+                                <option value="" ${!match.TEAM1 ? 'selected' : ''}>None</option>
+                                ${teams.map(team => `
+                                    <option value="${team.TEAM_ID}" 
+                                        ${match.TEAM1 === team.TEAM_ID ? 'selected' : ''}>
+                                        ${team.TEAM_NAME}
+                                    </option>
+                                `).join('')}
+                            </select>
+                            <span><b>&emsp;VS&emsp;</b></span>
+                            <label for="TEAM2_${matchId}"><b>TEAM 2</b></label>
+                            <select id="TEAM2_${matchId}" name="TEAM2_${matchId}">
+                                <option value="" ${!match.TEAM2 ? 'selected' : ''}>None</option>
+                                ${teams.map(team => `
+                                    <option value="${team.TEAM_ID}" 
+                                        ${match.TEAM2 === team.TEAM_ID ? 'selected' : ''}>
+                                        ${team.TEAM_NAME}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
+                        <br>
+                    `;
+                }).join('')}
+            `;
+        }
+
+        function generateSemiFinalForm(matches) {
+            matches = matches || [];
+            // Get the match data for MATCHES_ID 5 and 6
+            const match5 = matches.find(match => match.MATCHES_ID === '5');
+            const match6 = matches.find(match => match.MATCHES_ID === '6');
+
+            return `
+                <p><b>MATCH 1</b></p>
+                <div>
+                    <label for="TEAM1_5"><b>TEAM 1</b></label>
+                    <select id="TEAM1_5" name="TEAM1_5">
+                        <option value="" ${!match5?.TEAM1 || match5?.TEAM1 === '' ? 'selected' : ''}>None</option>
+                        ${matches.filter(match => match.MATCHES_ID === '1').map(match => `
+                            <option value="${match.TEAM1}" ${match.TEAM1 === match5?.TEAM1 ? 'selected' : ''}>${match.TEAM1_NAME}</option>
+                            <option value="${match.TEAM2}" ${match.TEAM2 === match5?.TEAM1 ? 'selected' : ''}>${match.TEAM2_NAME}</option>
+                        `).join('')}
+                    </select>
+                    <span><b>&emsp;VS&emsp;</b></span>
+                    <label for="TEAM2_5"><b>TEAM 2</b></label>
+                    <select id="TEAM2_5" name="TEAM2_5">
+                        <option value="" ${!match5?.TEAM2 || match5?.TEAM2 === '' ? 'selected' : ''}>None</option>
+                        ${matches.filter(match => match.MATCHES_ID === '2').map(match => `
+                            <option value="${match.TEAM1}" ${match.TEAM1 === match5?.TEAM2 ? 'selected' : ''}>${match.TEAM1_NAME}</option>
+                            <option value="${match.TEAM2}" ${match.TEAM2 === match5?.TEAM2 ? 'selected' : ''}>${match.TEAM2_NAME}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                <br>
+                <p><b>MATCH 2</b></p>
+                <div>
+                    <label for="TEAM1_6"><b>TEAM 1</b></label>
+                    <select id="TEAM1_6" name="TEAM1_6">
+                        <option value="" ${!match6?.TEAM1 || match6?.TEAM1 === '' ? 'selected' : ''}>None</option>
+                        ${matches.filter(match => match.MATCHES_ID === '3').map(match => `
+                            <option value="${match.TEAM1}" ${match.TEAM1 === match6?.TEAM1 ? 'selected' : ''}>${match.TEAM1_NAME}</option>
+                            <option value="${match.TEAM2}" ${match.TEAM2 === match6?.TEAM1 ? 'selected' : ''}>${match.TEAM2_NAME}</option>
+                        `).join('')}
+                    </select>
+                    <span><b>&emsp;VS&emsp;</b></span>
+                    <label for="TEAM2_6"><b>TEAM 2</b></label>
+                    <select id="TEAM2_6" name="TEAM2_6">
+                        <option value="" ${!match6?.TEAM2 || match6?.TEAM2 === '' ? 'selected' : ''}>None</option>
+                        ${matches.filter(match => match.MATCHES_ID === '4').map(match => `
+                            <option value="${match.TEAM1}" ${match.TEAM1 === match6?.TEAM2 ? 'selected' : ''}>${match.TEAM1_NAME}</option>
+                            <option value="${match.TEAM2}" ${match.TEAM2 === match6?.TEAM2 ? 'selected' : ''}>${match.TEAM2_NAME}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                <br>
+            `;
+        }
+
+        function generateFinalsForm(matches) {
+            matches = matches || [];
+            // Get the match data for MATCHES_ID 5, 6, and 7
+            const match5 = matches.find(match => match.MATCHES_ID === '5');
+            const match6 = matches.find(match => match.MATCHES_ID === '6');
+            const match7 = matches.find(match => match.MATCHES_ID === '7');
+
+            // Helper function to generate options for a select element
+            function generateTeamOptions(match, matchId) {
+                const options = [];
+                const matchData = matches.find(m => m.MATCHES_ID === matchId);
+
+                if (matchData) {
+                    // Only add options if TEAM1 or TEAM2 is not null or empty
+                    if (matchData.TEAM1) {
+                        options.push(`
+                            <option value="${matchData.TEAM1}" ${matchData.TEAM1 === match?.TEAM1 ? 'selected' : ''}>
+                                ${matchData.TEAM1_NAME || 'None'}
+                            </option>
+                        `);
+                    }
+                    if (matchData.TEAM2) {
+                        options.push(`
+                            <option value="${matchData.TEAM2}" ${matchData.TEAM2 === match?.TEAM2 ? 'selected' : ''}>
+                                ${matchData.TEAM2_NAME || 'None'}
+                            </option>
+                        `);
+                    }
+                }
+                return options.join('');
+            }
+
+            return `
+                <div>
+                    <label for="TEAM1_7"><b>TEAM 1</b></label><br>
+                    <select id="TEAM1_7" name="TEAM1_7">
+                        <option value="" ${!match7?.TEAM1 || match7?.TEAM1 === '' ? 'selected' : ''}>None</option>
+                        ${generateTeamOptions(match7, '5')}
+                    </select>
+                    <br><br>
+                    <span><b>&emsp;VS&emsp;</b></span>
+                    <br><br>
+                    <label for="TEAM2_7"><b>TEAM 2</b></label><br>
+                    <select id="TEAM2_7" name="TEAM2_7">
+                        <option value="" ${!match7?.TEAM2 || match7?.TEAM2 === '' ? 'selected' : ''}>None</option>
+                        ${generateTeamOptions(match7, '6')}
+                    </select>
+                </div>
+                <br>
+            `;
+        }
+
+        function generateChampionForm(matches) {
+            matches = matches || [];
+            // Get the match data for MATCHES_ID 7
+            const match7 = matches.find(match => match.MATCHES_ID === '7');
+
+            return `
+                <div>
+                    <label for="WINNER_7"><b>CHAMPION</b></label><br>
+                    <select id="WINNER_7" name="WINNER_7">
+                        <option value="" ${!match7?.TEAM1 || match7?.TEAM1 === '' ? 'selected' : ''}>None</option>
+                        ${matches.filter(match => match.MATCHES_ID === '7').map(match => `
+                            <option value="${match.TEAM1}" ${match.TEAM1 === match7?.WINNER ? 'selected' : ''}>${match.TEAM1_NAME}</option>
+                            <option value="${match.TEAM2}" ${match.TEAM2 === match7?.WINNER ? 'selected' : ''}>${match.TEAM2_NAME}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                <br>
+            `;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('edit-modal');
+            modal.style.display = 'none';
+        }
+
+        //EVENTS
+        let selectedDate = getTodayDate();
+        selectDay(selectedDate);
+
+        function getTodayMonthYear() {
+            const today = new Date();
+            const month = today.getMonth(); 
+            const year = today.getFullYear();
+            return { month, year };
+        }
+
+        function setDefaultMonthYear() {
+            const { month, year } = getTodayMonthYear();
+
+            document.getElementById("monthDropdown").value = month;
+            document.getElementById("yearDropdown").value = year;
+            
+            generateCalendar(month, year);
+        }
+        setDefaultMonthYear();
+
+        function getTodayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed, so add 1
+            const day = String(today.getDate()).padStart(2, '0');
+
+            return `${year}-${month}-${day}`; // Returns today's date in YYYY-MM-DD format
+        }
+
+        function selectDay(date) {
+            selectedDate = date;
+            // Display the events for the selected date
+            highlightSelectedDate(date);
+            displayEventsForDate(date);
+            updateSelectedDateDisplay(date);
+        }
+
+        function updateSelectedDateDisplay(date) {
+            const [year, month, day] = date.split("-");
+            const dateObject = new Date(year, month - 1, day); // Create a Date object
+            const dayName = dateObject.toLocaleString("default", { weekday: "long" }); // Get day name (e.g., Monday)
+            const monthName = dateObject.toLocaleString("default", { month: "long" }); // Get month name (e.g., December)
+
+            // Update the display elements
+            document.getElementById("selectedDayNumber").textContent = day; // Day number
+            document.getElementById("selectedDayName").textContent = dayName; // Day name
+            document.getElementById("selectedMonthYear").textContent = `${monthName} ${year}`; // Month and year
+        }
+
+        // Highlight the selected date in the calendar
+        function highlightSelectedDate(date) {
+            console.log(date)
+            // First, remove any previous highlights
+            const allDayCells = document.querySelectorAll(".day-cell");
+            allDayCells.forEach(cell => {
+                cell.classList.remove("selected-day"); // Remove the selected class from all days
+            });
+
+            // Now add the highlight to the clicked date
+            const selectedCell = document.querySelector(`.day-cell[data-date="${date}"]`);
+            if (selectedCell) {
+                selectedCell.classList.add("selected-day"); // Add the class to highlight the selected date
+            }
+        }
+
+        // Function to update calendar based on the selected month
+        function updateCalendar() {
+            const selectedMonth = parseInt(document.getElementById("monthDropdown").value, 10);
+            const selectedyear = parseInt(document.getElementById("yearDropdown").value, 10);
+            generateCalendar(selectedMonth, selectedyear);
+            fetchAndHighlightEventDates();
+        }
+
+        function generateCalendar(selectedMonth, selectedYear) {
+            const year = selectedYear;
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            const calendarContainer = document.getElementById("calendarContainer");
+            calendarContainer.innerHTML = "";
+
+            const monthSection = document.createElement("div");
+            monthSection.className = "month-section";
+            monthSection.innerHTML = `
+                <div class="calendar-grid">
+                    <div class="day-header">Mon</div>
+                    <div class="day-header">Tue</div>
+                    <div class="day-header">Wed</div>
+                    <div class="day-header">Thu</div>
+                    <div class="day-header">Fri</div>
+                    <div class="day-header">Sat</div>
+                    <div class="day-header">Sun</div>
+                </div>
+            `;
+
+            const calendarGrid = monthSection.querySelector(".calendar-grid");
+            const firstDay = new Date(year, selectedMonth, 1).getDay();
+            const offset = (firstDay + 6) % 7;
+
+            for (let i = 0; i < offset; i++) {
+                const emptyCell = document.createElement("div");
+                emptyCell.className = "day-cell empty-day";
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth[selectedMonth]; day++) {
+                const dateKey = `${year}-${String(selectedMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayCell = document.createElement("div");
+                dayCell.className = "day-cell";
+                dayCell.textContent = day;
+                dayCell.setAttribute("data-date", dateKey);
+                dayCell.onclick = () => selectDay(dateKey);
+
+                // If the current day is selected, apply the selected class
+                if (selectedDate === dateKey) {
+                    dayCell.classList.add("selected-day");
+                }
+
+                calendarGrid.appendChild(dayCell);
+            }
+
+            calendarContainer.appendChild(monthSection);
+        }
+
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        // Function to open the event form overlay
+        function openEventFormOverlay(date) {
+            document.getElementById("selectedDateDisplay").textContent = date;
+            document.getElementById("eventFormOverlay").style.display = "flex";
+            document.getElementById("eventTitleInput").value = "";
+            document.getElementById("eventTimeInput").value = "";
+
+            fetchTeamsForSelection();
+        }
+
+        function fetchTeamsForSelection() {
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ actionType: "getTeams" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    teamOptions = [];
+                    teamOptions = data.teams;
+                    updateCalendarSelectOptions(teamOptions);
+                } else {
+                    console.error("Failed to fetch teams:", data.message);
+                }
+            })
+            .catch(error => console.error("Error fetching teams:", error));
+        }
+
+        function updateCalendarSelectOptions(teams) {
+            const teamSelectLeft = document.getElementById("teamSelectLeftEvent");
+            const teamSelectRight = document.getElementById("teamSelectRightEvent");
+
+            // Clear previous options
+            teamSelectLeft.innerHTML = "<option>Select Team 1</option>";
+            teamSelectRight.innerHTML = "<option>Select Team 2</option>";
+
+            // Populate the dropdowns with team names
+            teams.forEach(team => {
+                const optionLeft = document.createElement("option");
+                optionLeft.value = team.teamId; // Use TEAM_ID as the value
+                optionLeft.textContent = team.teamName; // Display TEAM_NAME
+
+                const optionRight = document.createElement("option");
+                optionRight.value = team.teamId; // Use TEAM_ID as the value
+                optionRight.textContent = team.teamName; // Display TEAM_NAME
+
+                teamSelectLeft.appendChild(optionLeft);
+                teamSelectRight.appendChild(optionRight);
+            });
+
+            teamSelectLeft.addEventListener("change", () => disableSelectedOptions(teams));
+            teamSelectRight.addEventListener("change", () => disableSelectedOptions(teams));
+        }
+
+        function disableSelectedOptions(teams) {
+            const teamSelectLeft = document.getElementById("teamSelectLeftEvent");
+            const teamSelectRight = document.getElementById("teamSelectRightEvent");
+
+            // Get the currently selected values
+            const selectedLeft = teamSelectLeft.value;
+            const selectedRight = teamSelectRight.value;
+
+            // Reset all options to enabled first
+            teams.forEach(team => {
+                const optionLeft = teamSelectLeft.querySelector(`option[value='${team.teamId}']`);
+                const optionRight = teamSelectRight.querySelector(`option[value='${team.teamId}']`);
+
+                if (optionLeft) optionLeft.disabled = false;
+                if (optionRight) optionRight.disabled = false;
+            });
+
+            // Disable the selected options in the opposite dropdown
+            if (selectedLeft) {
+                const optionRightToDisable = teamSelectRight.querySelector(`option[value='${selectedLeft}']`);
+                if (optionRightToDisable) optionRightToDisable.disabled = true;
+            }
+
+            if (selectedRight) {
+                const optionLeftToDisable = teamSelectLeft.querySelector(`option[value='${selectedRight}']`);
+                if (optionLeftToDisable) optionLeftToDisable.disabled = true;
+            }
+        }
+
+        // Close the event form overlay
+        function closeEventFormOverlay() {
+            document.getElementById("eventFormOverlay").style.display = "none";
+        }
+
+        // Save to add event
+        function saveEvent() {
+            const eventTitle = document.getElementById("eventTitleInput").value;
+            const eventTime = document.getElementById("eventTimeInput").value; 
+            const selectedDate = document.getElementById("selectedDateDisplay").textContent;
+            const team1 = document.getElementById("teamSelectLeftEvent").value;
+            const team2 = document.getElementById("teamSelectRightEvent").value;
+
+            if (!eventTitle || !eventTime || team1 === "Select Team 1" || team2 === "Select Team 2") {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            const [hour, minute] = eventTime.split(":");
+            const ampm = hour >= 12 ? "PM" : "AM";
+            const formattedTime = `${((hour % 12) || 12)}:${minute} ${ampm}`;
+
+            const eventData = {
+                actionType: "addEvent",
+                eventTitle: eventTitle,
+                eventTime: formattedTime, 
+                eventDate: selectedDate,
+                team1: team1,
+                team2: team2
+            };
+
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(eventData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    const eventListBody = document.getElementById("eventListBody");
+                    eventListBody.innerHTML = '';
+                    const UpcomingeventListBody = document.getElementById("upcomingListBody");
+                    UpcomingeventListBody.innerHTML = '';
+                    displayUpcomingEvents();
+                    displayEventsForDate(selectedDate); 
+                    batchHighlightEventDates(selectedDate);
+                    alert("Event added successfully");
+                    closeEventFormOverlay();
+                } else {
+                    alert("Failed to save event: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error saving event:", error);
+                alert("An error occurred while saving the event.");
+            });
+        }
+
+        // Display events for the selected date from the database
+        function displayEventsForDate(date) {
+            const eventListBody = document.getElementById("eventListBody");
+            eventListBody.innerHTML = ""; // Clear existing events
+
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    actionType: "getEventsByDate",
+                    selectedDate: date,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        data.events.forEach(event => {
+                            const newRow = document.createElement("tr");
+                            newRow.innerHTML = `
+                                <td>${event.eventName}</td>
+                                <td>${event.time}</td>
+                                <td>
+                                    <button class="edit-btn-events" onclick="editEvent(${event.schedId})">✏️</button>
+                                    <button class="delete-btn" onclick="deleteEvent(${event.schedId})">❌</button>
+                                </td>
+                            `;
+                            eventListBody.appendChild(newRow);
+                        });
+                    } else {
+                        eventListBody.innerHTML = `
+                                <tr>
+                                    <td colspan="4">No events on this date.</td>
+                                </tr>
+                            `;
+                    }
+                })
+                .catch(error => console.error("Error fetching events:", error));
+        }
+
+        // Display upcoming events from the database
+        function displayUpcomingEvents() {
+            const upcomingListBody = document.getElementById("upcomingListBody");
+            upcomingListBody.innerHTML = ""; // Clear existing upcoming events
+
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    actionType: "getUpcomingEvents",
+                    currentDate: getTodayDate(),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        if (data.events.length > 0) {
+                            data.events.forEach(event => {
+                                const newRow = document.createElement("tr");
+                                newRow.innerHTML = `
+                                    <td>${event.eventName}</td>
+                                    <td>${event.date}</td>
+                                    <td>${event.time}</td>
+                                    <td>
+                                        <button class="edit-btn-upcoming" onclick="editEvent(${event.schedId})">✏️</button>
+                                        <button class="delete-btn" onclick="deleteEvent(${event.schedId})">❌</button>
+                                    </td>
+                                `;
+                                upcomingListBody.appendChild(newRow);
+                            });
+                        } else {
+                            upcomingListBody.innerHTML = `
+                                <tr>
+                                    <td colspan="4">No upcoming events.</td>
+                                </tr>
+                            `;
+                        }
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(error => console.error("Error fetching upcoming events:", error));
+        }
+        displayUpcomingEvents();
+
+        //FOR EDITING EVENT
+        let selectedEventId = null;
+
+        function editEvent(eventId) {
+            selectedEventId = eventId;
+            fetchEventData(eventId);
+        }
+
+        function fetchEventData(eventId) { 
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ actionType: "getEventDetails", eventId: eventId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    const event = data.event;
+
+                    // Convert time to 24-hour format
+                    const eventTime24Hour = formatTimeTo24Hour(event.time);
+
+                    // Set the event data to the modal
+                    const selectedDateElement = document.getElementById("selectedDateDisplayEdit");
+                    const selectedDate = new Date(event.date); 
+                    const currentDate = new Date();
+                    const currentDateOnly = currentDate.toISOString().split('T')[0];
+                    const selectedDateOnly = selectedDate.toISOString().split('T')[0];;
+                    if (selectedDateOnly > currentDateOnly) {
+                        document.getElementById("datePropertyTitle").style.display = "inline-block";
+                        document.getElementById("dateUpdate").style.display = "inline-block";
+                    } else {
+                        document.getElementById("datePropertyTitle").style.display = "none"; 
+                        document.getElementById("dateUpdate").style.display = "none"; 
+                    }
+
+                    selectedDateElement.textContent = event.date; 
+                    document.getElementById("eventTitleInputEdit").value = event.eventName;
+                    document.getElementById("eventTimeInputEdit").value = eventTime24Hour;
+
+                    fetchTeamsForSelectionEdit().then(() => {
+                        setTeamSelection(event.team1id, event.team2id);
+                    });
+
+                    // Show the modal
+                    document.getElementById("eventEditFormOverlay").style.display = "flex";
+                } else {
+                    console.error("Failed to fetch event details:", data.message);
+                }
+            })
+            .catch(error => console.error("Error fetching event details:", error));
+        }
+
+        function fetchTeamsForSelectionEdit() {
+            return fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ actionType: "getTeams" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    teamOptions = data.teams;
+                    updateCalendarEditSelectOptions(teamOptions);
+                } else {
+                    console.error("Failed to fetch teams:", data.message);
+                }
+            })
+            .catch(error => console.error("Error fetching teams:", error));
+        }
+
+        function updateCalendarEditSelectOptions(teams) {
+            const teamSelectLeft = document.getElementById("teamSelectLeftEventUpdate");
+            const teamSelectRight = document.getElementById("teamSelectRightEventUpdate");
+
+            // Clear previous options
+            teamSelectLeft.innerHTML = "<option>Select Team 1</option>";
+            teamSelectRight.innerHTML = "<option>Select Team 2</option>";
+
+            // Populate the dropdowns with team names
+            teams.forEach(team => {
+                const optionLeft = document.createElement("option");
+                optionLeft.value = team.teamId; // Use TEAM_ID as the value
+                optionLeft.textContent = team.teamName; // Display TEAM_NAME
+
+                const optionRight = document.createElement("option");
+                optionRight.value = team.teamId; // Use TEAM_ID as the value
+                optionRight.textContent = team.teamName; // Display TEAM_NAME
+
+                teamSelectLeft.appendChild(optionLeft);
+                teamSelectRight.appendChild(optionRight);
+            });
+        }
+
+        function setTeamSelection(team1Id, team2Id) {
+            console.log(team1Id, team2Id)
+            const teamSelectLeft = document.getElementById("teamSelectLeftEventUpdate");
+            const teamSelectRight = document.getElementById("teamSelectRightEventUpdate");
+
+            // Pre-select the teams based on the IDs
+            teamSelectLeft.value = team1Id;
+            teamSelectRight.value = team2Id;
+        }
+
+        function formatTimeTo24Hour(time) {
+            // Convert 12-hour time to 24-hour format
+            const [hours, minutes, period] = time.split(/[: ]/);
+            let hour24 = parseInt(hours);
+            if (period === "PM" && hour24 < 12) hour24 += 12;
+            if (period === "AM" && hour24 === 12) hour24 = 0;
+            return `${String(hour24).padStart(2, "0")}:${minutes}`;
+        }
+
+        // Function to populate the team dropdowns with pre-selected teams
+        function populateTeamSelects(team1, team2) {
+            console.log(team1, team2)
+            
+            const teamSelectLeft = document.getElementById("teamSelectLeftEventUpdate");
+            const teamSelectRight = document.getElementById("teamSelectRightEventUpdate");
+
+            teamSelectLeft.innerHTML = "<option>Select Team 1</option>";
+            teamSelectRight.innerHTML = "<option>Select Team 2</option>";
+
+            fetchTeamsForSelection();
+            teamSelectLeft.value = team1;
+            teamSelectRight.value = team2;
+        }
+
+        function saveUpdatedEvent() {
+            
+            const eventTitle = document.getElementById("eventTitleInputEdit").value;
+            let eventTime = document.getElementById("eventTimeInputEdit").value;
+            const team1 = document.getElementById("teamSelectLeftEventUpdate").value;
+            const team2 = document.getElementById("teamSelectRightEventUpdate").value;
+            const selectedDate = document.getElementById("selectedDateDisplayEdit").textContent;
+            const date = document.getElementById("dateUpdate").value;
+
+            // Validate the inputs
+            if (eventTitle && eventTime && team1 !== "Select Team 1" && team2 !== "Select Team 2") {
+                // Ensure the event time is in 12-hour format (if it is in 24-hour format)
+                eventTime = formatTimeTo12Hour(eventTime);
+
+                // Prepare the data to send to the server
+                const eventData = {
+                    actionType: "updateEvent",
+                    eventId: selectedEventId,
+                    eventTitle: eventTitle,
+                    eventTime: eventTime,
+                    team1: team1,
+                    team2: team2,
+                    selectedDate: date || selectedDate
+                };
+
+                // Send the updated event data to the server
+                fetch("getEvents.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(eventData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        const eventListBody = document.getElementById("eventListBody");
+                        eventListBody.innerHTML = '';
+                        const UpcomingeventListBody = document.getElementById("upcomingListBody");
+                        UpcomingeventListBody.innerHTML = '';
+                        displayEventsForDate(selectedDate);
+                        displayUpcomingEvents();
+                        closeEventEditFormOverlay();
+                        alert("Successfully Updated Event Schedule.")
+                    } else {
+                        console.error("Failed to update event:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error saving updated event:", error));
+            } else {
+                alert("Please fill in all fields correctly.");
+            }
+        }
+
+        function formatTimeTo12Hour(time) {
+            // Convert 24-hour time to 12-hour format with AM/PM
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours, 10);
+            const period = hours >= 12 ? "PM" : "AM";
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Handle 12 AM/PM
+
+            return `${hours}:${minutes} ${period}`;
+        }
+
+        // Close the modal
+        function closeEventEditFormOverlay() {
+            document.getElementById("eventEditFormOverlay").style.display = "none";
+        }
+
+        function fetchAndHighlightEventDates() {
+            fetch("getEvents.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ actionType: "getEventDates" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    const eventDates = data.dates;
+                    console.log(eventDates)
+                    batchHighlightEventDates(eventDates);
+                } else {
+                    console.error("Failed to fetch event dates:", data.message);
+                }
+            })
+            .catch(error => console.error("Error fetching event dates:", error));
+        }
+        fetchAndHighlightEventDates()
+
+        // Highlight the date with events
+        function batchHighlightEventDates(dates) {
+            const calendarCells = document.querySelectorAll(".day-cell");
+            const eventDateSet = new Set(dates);
+
+            calendarCells.forEach(cell => {
+                const cellDate = cell.getAttribute("data-date");
+                if (cellDate && eventDateSet.has(cellDate)) {
+                    cell.classList.add("event-day");
+                } 
+            });
+        }
+
+        // Remove highlight from a date
+        function removeHighlightFromDate(date) {
+            const dateCell = document.querySelector(`.day-cell[data-date="${date}"]`);
+            if (dateCell) {
+                dateCell.classList.remove("event-day");
+            }
+        }
+
+        // Function to handle opening of the event form when the "ADD" button is clicked
+        document.querySelector('.addevents').addEventListener('click', () => {
+            openEventFormOverlay(selectedDate);
+        });
+
+        // Function to delete an event
+        function deleteEvent(eventId) {
+            if (confirm("Are you sure you want to delete this event?")) {
+                fetch("getEvents.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        actionType: "deleteEvent",
+                        eventId: eventId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        const eventListBody = document.getElementById("eventListBody");
+                        eventListBody.innerHTML = '';
+                        const UpcomingeventListBody = document.getElementById("upcomingListBody");
+                        UpcomingeventListBody.innerHTML = '';
+                        displayEventsForDate(selectedDate);
+                        displayUpcomingEvents();
+                        alert("Successfully Deleted Event Schedule.")
+                    } else {
+                        console.error("Error deleting event:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error deleting event:", error));
+            }
+        }
+
+        /* RECORDS */
+        function fetchRecords() {
+            fetch("recordsHandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "actionType=getRecords"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        populateRecordsTable(data.records);
+                    } else {
+                        console.error(data.message || "Failed to fetch records.");
+                        populateRecordsTable([]); // Clear table if there's an error
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching records:", error);
+                });
+        }
+        fetchRecords();
+
+        // Populate the records table with fetched data
+        function populateRecordsTable(records) {
+            const recordsTableBody = document.getElementById("recordsTableBody");
+            recordsTableBody.innerHTML = ""; // Clear existing rows
+
+            if (records.length === 0) {
+                const noDataRow = `
+                    <tr>
+                        <td colspan="8" style="text-align: center;">No records available.</td>
+                    </tr>
+                `;
+                recordsTableBody.innerHTML = noDataRow;
+                return;
+            }
+
+            records.forEach((record, index) => {
+                const rowBackgroundColor = index % 2 === 0 ? "rgb(44, 44, 44)" : "rgb(76, 76, 76)";
+
+                const row = `
+                    <tr style="background-color: ${rowBackgroundColor};">
+                        <td>${record.REFERENCE_NO}</td>
+                        <td>${record.BUYER_NAME}</td>
+                        <td>${record.SCHEDULE_DATE}</td>
+                        <td>${record.SCHEDULE_TIME}</td>
+                        <td>${record.EVENT_NAME}</td>
+                        <td>${record.SEAT}</td>
+                        <td>${record.QUANTITY}</td>
+                        <td>${record.TOTAL}</td>
+                    </tr>
+                `;
+                recordsTableBody.innerHTML += row;
+            });
+        }
+
+        /* PLAYER */
+        document.getElementById("addPlayerButton").addEventListener("click", () => openPlayerModal("add"));
+
+        let currentPlayerId = null; // Used to track the player being edited
+        // Function to fetch players and populate the table
+        function fetchPlayers() {
+            fetch("playerHandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "actionType=fetchPlayers",
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === "success") {
+                        populatePlayerTable(data.players);
+                    } else {
+                        console.error("Failed to fetch players.");
+                    }
+                });
+        }
+
+        // Populate the table with player data
+        function populatePlayerTable(players) {
+            const tableBody = document.getElementById("playerTableBody");
+            tableBody.innerHTML = "";
+
+            players.forEach((player, index) => {
+                const row = document.createElement("tr");
+
+                // Alternate row background colors
+                const backgroundColor = index % 2 === 0 ? "rgb(44, 44, 44)" : "rgb(76, 76, 76)";
+                
+                row.style.backgroundColor = backgroundColor;
+
+                row.innerHTML = `
+                    <td>${player.FIRSTNAME}</td>
+                    <td>${player.LASTNAME}</td>
+                    <td>${player.PLAYER_TEAM || 'NONE'}</td>
+                    <td>
+                        <button class="w3-button w3-round-large w3-border" style="background-color: #2C2C2C; color: white;" onclick="openPlayerModal('edit', ${player.PLAYER_ID})">EDIT</button>
+                        <button class="w3-button w3-round-large w3-border" style="background-color: #FF0000; color: white;" onclick="deletePlayer(${player.PLAYER_ID}, '${player.FIRSTNAME}', '${player.LASTNAME}')">DELETE</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Open the modal for adding or editing
+        function openPlayerModal(action, playerId = null) {
+            currentPlayerId = playerId;
+            const modal = document.getElementById("playerModal");
+            const modalTitle = document.getElementById("modalTitle");
+            const firstNameInput = document.getElementById("firstName");
+            const lastNameInput = document.getElementById("lastName");
+
+            if (action === "add") {
+                modalTitle.textContent = "ADD PLAYER";
+                firstNameInput.value = "";
+                lastNameInput.value = "";
+            } else if (action === "edit") {
+                modalTitle.textContent = "EDIT PLAYER";
+                fetch("playerHandler.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `actionType=getPlayerDetails&playerId=${playerId}`,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status === "success") {
+                            firstNameInput.value = data.player.FIRSTNAME;
+                            lastNameInput.value = data.player.LASTNAME;
+                        }
+                    });
+            }
+
+            modal.style.display = "block";
+        }
+
+        // Save player (add or edit)
+        document.getElementById("savePlayerButton").addEventListener("click", () => {
+            const firstName = document.getElementById("firstName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
+
+            if (!firstName || !lastName) {
+                alert("First Name and Last Name are required.");
+                return;
+            }
+
+            const actionType = currentPlayerId ? "editPlayer" : "addPlayer";
+            const body = `actionType=${actionType}&playerId=${currentPlayerId || ""}&firstName=${firstName}&lastName=${lastName}`;
+
+            fetch("playerHandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === "success") {
+                        fetchPlayers();
+                        document.getElementById("playerModal").style.display = "none";
+                        alert("Operation Completed Successfully.")
+                    } else {
+                        let message = data.message;
+                        alert(message);
+                        message = '';
+                    }
+                });
+        });
+
+        // Cancel button logic
+        document.getElementById("cancelButton").addEventListener("click", () => {
+            document.getElementById("playerModal").style.display = "none";
+        });
+
+        // Delete player
+        function deletePlayer(playerId, firstName, lastName) {
+            if (confirm(`Do you want to delete this player name ${firstName} ${lastName}?`)) {
+                fetch("playerHandler.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `actionType=deletePlayer&playerId=${playerId}`,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status === "success") {
+                            alert("Player Successfull deleted.")
+                            fetchPlayers();
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            }
+        }
+
+        // Fetch initial players
+        fetchPlayers();
+
+        // For Logout
+        function logout() {
+            // Confirm the logout action
+            if (confirm("Do you really want to logout?")) {
+                // Send a POST request to the server to log out
+                fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // Make sure Content-Type is set to application/json
+                    },
+                    body: JSON.stringify({ action: 'logout' })  // Send JSON data
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Redirect to the login page after successful logout
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert("Logout failed. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during logout:", error);
+                    alert("An error occurred while logging out. Please try again.");
+                });
+            }
+        }
+    </script>
+</body>
+</html>

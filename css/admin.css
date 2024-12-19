@@ -1,0 +1,1574 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+body {
+  background-color: #262626;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center; /* Horizontal centering for text */
+  vertical-align: middle; /* Vertical centering */
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.sidebar {
+  width: 160px;
+  height: 100vh;
+  background: #2c2c2d;
+  padding: 20px 0;
+  position: fixed;
+}
+
+.sidebar .logo-image {
+  display: block;
+  width: 50px;
+  height: auto;
+  margin: 0  10px;
+  border-radius: 50%; /* Circular logo */
+}
+
+.sidebar ul li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #bdb8d7;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar ul li a {
+  color: #c5c5c5;
+  display: block;
+}
+
+.sidebar ul li:hover {
+  background-color: #1f1f20;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+  color: #4CAF50;
+}
+
+/* Main Content styling */
+.main_content {
+  width: calc(100% - 165px);
+  margin-left: 160px;
+  padding: 20px;
+  padding-top: 80px; /* Space for the header */
+}
+
+.header {
+  font-size: 24px;
+  color: #fff;
+  background-color: #3b3f99;
+  text-align: center;
+  padding: 20px 0;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  left: 200px;
+  width: calc(100% - 200px);
+  z-index: 10;
+}
+
+/* Match section */
+.match-section {
+  border-radius: 8px;
+}
+
+.match-header {
+  padding-left: 200px;
+  padding-right: 200px;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  gap: 350px; 
+  color: white;
+  background-color: #3d3d3d;
+  margin: 0; /* Space around the logo */
+  height: 220px;
+}
+
+.team-container-current {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  text-align: center;
+  width: 500px; 
+}
+
+.team-display-left,
+.team-display-right {
+  white-space: nowrap; /* Prevents wrapping */
+  overflow: hidden; /* Hides overflow content */
+  text-overflow: ellipsis; /* Adds ellipsis for overflow */
+  width: 100%; /* Ensures it doesn't exceed container width */
+  font-size: 20px; /* Adjust font size as needed */
+  font-weight: bold; 
+  margin-top: 10px; /* Adds space between logo and text */
+}
+
+.logo-image-current {
+  width: 150px; /* Adjust logo size */
+  height: 150px; /* Adjust logo size */
+  object-fit: cover; /* Ensures logo fits without distortion */
+  margin-bottom: 10px; /* Adds space below the logo */
+}
+
+.vs {
+  font-size: 120px; 
+  margin-right: 10%;
+  margin-left: 10%;
+  align-self: center; /* Ensures proper centering */
+}
+
+.edit-btn {
+  padding: 8px 20px;
+  border: none;
+  background-color: rgb(7, 95, 218);
+  color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.edit-btn-events {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 20px;
+  color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.edit-btn-upcoming {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 20px;
+  color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.edit-btn:hover {
+  background-color: #3d44c7;
+}
+
+.header-container {
+  padding-top: 0.5%;
+  color: #bdb8d7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+.header-container h2 {
+  margin: 0;
+}
+
+.add-btn {
+  display: block;
+  margin: 10px 0 20px auto;
+  padding: 10px 20px;
+  background-color: rgba(0, 106, 255, 1);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #161af4;
+}
+
+/* Match list container */
+.match-list {
+  width: 100%;
+  max-height: 366px;
+  overflow-y: auto;
+}
+
+/* Each match item */
+.match-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  background-color: #4d4d4d;
+  font-family: Arial, sans-serif;
+}
+
+.match-item:nth-child(even) {
+  background-color: #666666;
+}
+
+.match-item:nth-child(odd) {
+  background-color: #4d4d4d;
+}
+
+.match-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+/* Team Logos */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%; /* Fixed width for consistent alignment */
+}
+
+.team-logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Team Names */
+.team-name {
+  font-size: 21px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 20%; /* Fixed width for consistent alignment */
+  text-align: center;
+}
+
+/* VS Label */
+.vs-label {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  width: 5%; /* Fixed width for consistent spacing */
+}
+
+/* Scores */
+.score {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  width: 5%; /* Fixed width for consistent alignment */
+}
+
+/* Separator between scores */
+.separator {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  width: 0.3;
+  text-align: center;
+}
+
+.winner {
+  color: #f1f1f1;
+}
+
+.loser {
+  color: grey;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  width: 10%; /* Fixed width for alignment */
+}
+
+.action-buttons button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+  color: #f1f1f1;
+}
+
+.action-buttons button:hover {
+  color: #ff0000; /* Highlight color on hover */
+}
+
+.action-buttons i {
+  font-size: 18px;
+}
+
+.match-item span,
+.match-item img {
+    display: inline-block;
+    margin: 0; /* Remove default spacing */
+    padding: 0; /* Remove default padding */
+}
+
+.match-item > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.match-item1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 5px 0; /* Adds small vertical spacing between match items */
+  background-color: transparent;
+  font-size: 25px;
+}
+
+.match-item1 span,
+.match-item1 img {
+    display: inline-block;
+    margin: 0; /* Remove default spacing */
+    padding: 0; /* Remove default padding */
+}
+
+.match-item1 > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  width: 100px; 
+  height: 100px; 
+  object-fit: cover;
+}
+
+.logo-score-image {
+  border-radius: 50%;
+  margin-right: 3px; /* Space between logo and text */
+}
+
+.team-logo-score-1 {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.team-info {
+  display: flex;
+  align-items: center;
+}
+
+/* VS text styling */
+.vs-small {
+  text-align: center;
+  font-weight: bold;
+  padding-right: 20%;
+  padding-left: 20%;
+}
+
+.team-score {
+  text-align: center;
+  word-break: break-word;
+}
+
+/* Scores styling */
+.score-left {
+  color: #104DC8;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.score-right {
+  color: #E93131;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.team-score-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px; /* Space between buttons */
+}
+
+.edit-match .fas:hover,
+.delete-match .fas:hover {
+    color: #007BFF;
+}
+
+/* Edit and Delete button styling */
+.edit-match, .delete-match {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: color 0.3s ease;
+}
+
+.edit-match i {
+  color: #63ff69;
+}
+
+.delete-match i {
+  color: #ff4400;
+}
+
+.edit-match:hover i {
+  color: #38d0ff;
+}
+
+.delete-match:hover i {
+  color: #ffbd18;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 50px;
+  }
+
+  .header {
+    left: 100px;
+    width: calc(100% - 100px);
+  }
+
+  .main_content {
+    margin-left: 50px;
+  }
+
+  .match-header, .match-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .edit-btn, .add-btn {
+    margin: 10px auto;
+  }
+}
+
+/* Edit slide overlay */
+.edit-slide {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-slide .edit-container {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.edit-slide .edit-container select,
+.edit-slide .edit-container input,
+.edit-slide .edit-container button {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Team slide overlay */
+.team-slide {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(146, 117, 146, 0.8); /* Dark background with transparency */
+  justify-content: center;
+  align-items: center;
+}
+
+.team-slide .team-container {
+  background-color: #dcdcdc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 70%;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Teams section styling */
+.teams-section {
+  width: 100%;
+  margin-top: 10px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.title-team{
+  height: 68px;
+  width: 1420px;
+  background: #3c3c3c;
+  border-radius: 16px;
+  font-weight: 200;
+  font-size: 32px;
+  line-height: 68px;
+  display: flex;
+  position: fixed;
+  top: 0;
+  color: #FFFFFF;
+}
+
+.teams-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.players-container {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.players-container div {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Styling each box */
+.team-container {
+  display: grid;               
+  grid-template-columns: repeat(2, minmax(20%, 1fr));
+  gap: 20px;                        
+  justify-content: center;       
+  align-items: center;           
+}
+
+.team-box {
+  border: 2px solid #333;
+  font-size: 18px; 
+  font-weight: bold;;
+  background-color: #716f6f;
+  color: white;
+  font-weight: 900;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;                
+  align-items: center;         
+  width: 40%;                     
+  justify-self: center;  
+  cursor: pointer;           
+}
+
+.team-box span {
+  padding-left: 15%;
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Icon styling */
+.icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Contact Us button styling */
+.contact-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #4CAF50;
+}
+
+/* Special styling for the orange box */
+.orange-box {
+  background-color: #ff6f00;
+  color: white;
+}
+
+.orange-box h3,
+.orange-box p {
+  color: white;
+}
+
+.orange-box .contact-btn {
+  background-color: #fff;
+  color: #ff6f00;
+}
+
+.orange-box .contact-btn:hover {
+  background-color: #333;
+  color: white;
+}
+
+/* Hover effect for each box */
+.team-box:hover {
+  transform: translateY(-10px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
+
+
+.image-preview {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+#teamImagePreview {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #333;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+/* Overlay background */
+.form-overlay {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0; 
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  justify-content: center; 
+  align-items: center;
+  z-index: 20;
+}
+
+/* Basic form styling */
+.team-info-form {
+  margin-top: 5%;
+  margin-left: 30%;
+  background-color: #E3F2FF;
+  padding: 20px;
+  border-radius: 10px;
+  width: 650px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+}
+
+/* Team name input styling */
+#teamNameInput {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.unselect {
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none;
+}
+
+/* Member input container with grid layout for 2 columns */
+.members-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.member-input input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.team-info-container {
+  display: flex; 
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px; 
+}
+
+/* Center the upload icon */
+/* Adjust upload box width */
+.image-upload {
+  padding-left: 4%;
+  display: flex;
+  justify-content: left;
+  margin: 20px 0;
+  flex-shrink: 0;
+  width: 150px !important; /* Adjusted width */
+  height: 150px !important;
+}
+
+.upload-icon {
+  width: 150px !important; 
+  height: 150px !important;
+  border: 2px dashed #333;
+  border-radius: 8px;
+  object-fit: cover;
+  padding: 5px;
+}
+
+.team-info-details {
+  padding-left: 4%;
+  margin-bottom: 20px; 
+  text-align: left; 
+  font-family: Arial, sans-serif;
+  flex-grow: 1;
+  font-size: 20px;
+}
+
+.team-name-display{
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.team-coach-display{
+  font-size: 20px;
+}
+
+/* Save button styling */
+.save-team-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.save-team-btn:hover {
+  background-color: #45a049;
+}
+
+.cancel-team-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: grey;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.bracket-section {
+    padding: 20px;
+    background-color: #f3f5f9;
+}
+
+.bracket-section h2 {
+    text-align: center;
+    color: #333;
+}
+
+.matchup {
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 5px;
+    width: 200px;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.matchup:hover {
+    transform: scale(1.05);
+}
+
+.event-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  flex-grow: 1; /* Allow it to take available space */
+}
+
+/* Display the Events and Calendar Sections */
+.calendar-section {
+  display: block; /* Ensure the calendar section is visible */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border: 1px solid #ddd;
+  width: 740px; 
+}
+
+/* Calendar Header */
+.calendar-header {
+  margin-bottom: 15px;
+}
+
+/* Style for dropdowns */
+.calendar-header select {
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+/* Day Header */
+.day-header {
+  background-color: #dbdbdb;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 5px;
+}
+
+/* Day Cell */
+.day-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  font-size: 1.1em;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.day-cell:hover {
+  background-color: #e0e7ff;
+}
+
+/* Event Panel Styling */
+.event-panel {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Event Date Header */
+.event-date-header {
+  display: flex; /* Ensure date header is visible */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Set the event section visibility */
+#eventsSection {
+  display: flex;
+  padding: 10px;
+}
+
+.event-date-number {
+  font-size: 3em;
+  color: #e74c3c;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.event-date-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-day-name, .event-month-year {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Event Form */
+.event-form {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.event-form input[type="text"], .event-form input[type="time"], .event-form select {
+  padding: 5px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.event-form button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Event List */
+.event-list table {
+  color: rgb(0, 0, 0);
+  width: 98%;
+  border-collapse: collapse;
+}
+
+.event-list th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.event-list th {
+  background-color: #f4f4f4;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.table-container-event {
+  max-height: 200px; /* Adjust the height of the scrollable table body */
+  overflow-y: auto;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+/* Highlighted day with event */
+.day-cell.event-day {
+  background-color: #ffcccc;
+  border-color: #e74c3c;
+}
+
+.selected-day {
+  background-color: #8ad0f9; 
+  font-weight: bold;
+  color: #000;
+  border-radius: 50%;
+}
+
+/* Event Form Overlay Styling */
+.form-overlay-events {
+  font-size: 18px;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+/* THIS IS FOR THE ADD BUTTON IN CALENDAR */
+.addevents {
+  padding: 1%;
+  font-size: 17px;
+  float:right;
+  border-radius: 10px;
+}
+
+.close-btn {
+  background-color: #ff5e5e;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+
+.event-info-form h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.save-event-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.save-event-btn:hover {
+  background-color: #45a049;
+}
+
+/* Event form styling */
+.event-info-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 450px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+}
+
+/* Save button styling */
+.save-event-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-event-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.event-day {
+  background-color: rgb(204, 204, 204);
+  color: rgb(30, 30, 30);
+  border-radius: 50%;
+}
+
+/* Edit Modal in Bracketing*/
+.modal {
+  display: none; 
+  position: fixed; 
+  font-size: 18px;
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal content box */
+.modal-content {
+  position: relative;
+  margin: 10% auto; 
+  padding: 20px;
+  width: 50%; 
+  max-width: 600px; 
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out; 
+}
+
+/* Modal title */
+#modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Modal body content */
+#modal-body {
+  margin-bottom: 20px;
+}
+
+/* Modal action buttons */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-actions button:first-child {
+  background-color: #4CAF50; /* Save button color */
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #45a049;
+}
+
+.modal-actions button:last-child {
+  background-color: #f44336; /* Cancel button color */
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Main bracket */
+.bracket-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; 
+  gap: 5px; 
+  background-color: #4a4a4a;
+  border-radius: 12px;
+  position: relative;
+  height: 695px;
+  overflow-y: auto;
+  padding: 1%;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 20%;
+}
+
+.line-round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 1.0%;
+}
+
+.round h2 {
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: #e8e9ef;
+  text-transform: uppercase;
+}
+
+.match {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+#quarter-finals{
+  margin-bottom: 20px;
+}
+
+#semi-finals {
+  margin-top: 80px; /* Center between Quarter Finals matches */
+}
+
+#finals {
+  margin-top: 238px; /* Center between Semi Finals matches */
+}
+
+#champion {
+  margin-top: 275px; /* Center between Finals */
+}
+
+.team {
+  background: #f1f1f1;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  max-width: 150px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 120px;
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none;
+}
+
+.team:hover {
+  background: #2c3e73;
+  color: white;
+}
+
+.team.champion {
+  font-weight: bold;
+  font-size: 18px;
+  color: #575656;
+  background: #ffe83d;
+}
+
+/* Connection lines */
+.round .match::after {
+  content: '';
+  width: 40px;
+  height: 2px;
+  background: #ffffff;
+  position: absolute;
+  top: 50%;
+  right: -40px;
+}
+
+/* Remove horizontal connector for Champion */
+#champion .match::after {
+  display: none; 
+}
+
+.round .match:nth-child(odd)::before {
+  content: '';
+  width: 2px;
+  height: 153px;
+  background: #ffffff;
+  position: absolute;
+  left: 160px;
+  top: -86px;
+}
+
+/* Vertical lines between matches for Semi-Finals */
+#semi-finals .match:nth-child(1)::before, 
+#semi-finals .match:nth-child(2)::before {
+  content: '';
+  width: 2px; 
+  height: 300px; 
+  background: #ffffff;
+  position: absolute;
+  left: 160px; 
+  top: 68px;
+}
+
+/* Add two horizontal lines to Semi-Finals */
+#semi-finals .match:nth-child(1)::after,
+#semi-finals .match:nth-child(2)::after {
+  content: '';
+  width: 40px;
+  height: 2px;
+  background: #ffffff;
+  position: absolute;
+  top: 68px; 
+  right: -40px; 
+}
+
+/* Horizontal line */
+#semi-finals .match:nth-child(1)::after:nth-child(2),
+#semi-finals .match:nth-child(2)::after:nth-child(2) {
+  content: '';
+  width: 40px; 
+  height: 2px;
+  background: #ffffff;
+  position: absolute;
+  bottom: 0%; 
+  right: -40px; 
+}
+
+/* Remove horizontal line for Champion */
+#champion .match::after {
+  content: none; 
+}
+
+ /* Disable horizontal line */
+#finals .match::after {
+  content: none;
+}
+
+.round#finals .match::before {
+  height: 240px;
+  top: -120px;
+}
+
+.round#champion .match::before {
+  width: 2px;
+  height: 200px;
+  left: -40px;
+  top: -100px;
+  background: #ffffff;
+}
+
+.horizontal-line-1, .horizontal-line-2 {
+  top: 204px;
+  margin-left: 43px;
+  width: 194px;
+  height: 2px;
+  background: #ffffff;
+  z-index: 1;
+  position: relative; 
+}
+
+.horizontal-line-2 {
+  top: 503px;
+}
+
+.horizontal-line-3 {
+  top: 365px;
+  margin-left: 45px;
+  width: 205px;
+  height: 2px; 
+  background: #ffffff; 
+  z-index: 1;
+  position: relative;
+}
+
+.horizontal-line-4 {
+  top: 365px;
+  width: 150px;
+  height: 2px;
+  background: #ffffff;
+  z-index: 1;
+  position: relative;
+}
+
+.round-pic {
+  border-radius: 50%; 
+  border: 2px solid #8b6565; 
+}
+
+.match {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.winner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team[readonly] {
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+/*TICKETING*/
+.filters {
+  display: flex;
+  gap: 20px;
+  padding: 0.3px;
+  color: white;
+  font-size: 20px;
+}
+
+.main-container {
+  display: flex;
+  height: 550px;
+}
+
+.left-window {
+  width: 65%;
+  overflow-y: auto;
+}
+
+.right-window {
+  margin-left: 1%;
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  padding: 10px;
+}
+
+.right-window-upper {
+  background: linear-gradient(0deg, #B9DDFF, #B9DDFF);
+  border-radius: 23px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.right-window-lower {
+  display: flex;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+table th, table td {
+  border: 1px solid rgb(182, 182, 182);
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #d3d3d3;
+}
+
+/* Hover effect on table rows */
+.hovertickettble:hover {
+  background-color: #f0f0f0; /* Light gray background when hovered */
+  cursor: pointer; /* Change cursor to a pointer */
+  color: #000;
+}
+
+/* Hover effect on table data cells */
+.hovertickettble td:hover {
+  background-color: #e0e0e0; /* Change the background of the cell */
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.details-section {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #646464;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.event-list {
+  width: 90%;
+  display: block; /* Ensure the event list is visible */
+  background-color: #2c2c2c;
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  height: 400px;
+}
+
+.upcoming-list {
+  display: block; /* Ensure the event list is visible */
+  background-color: #2c2c2c;
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border: 1px solid #ddd;
+  height: 295px;
+}
+
+.table-container-upcoming {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+.upcoming-list table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+.upcoming-list th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.upcoming-list th {
+  background-color: #f4f4f4;
+  color: black;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

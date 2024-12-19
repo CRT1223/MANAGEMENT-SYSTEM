@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="ball.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball Event</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="jsresources/qrcode.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <button class="toggle-btn" id="toggle-sidebar-btn"><i class="fas fa-bars"></i></button>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar " style="background-color: #2c2c2d;" id="sidebar">
+            <img src="3.png" alt="Basketball Tournament Logo" class="logo-image">
+            <ul class="" style="text-align: center; justify-content: center;">
+                <center>
+                    <li id="home-btn" class="sidebar-text unselect" style="padding: 5%;">Home</li>
+                    <li id="match-btn" class="sidebar-text" style="padding: 5%;"><i class="fas fa-match"></i>Match</li>
+                    <li id="ticketing-btn" class="sidebar-text" style="padding: 5%;">Tickets</li>
+                    <li id="bracketing-btn" class="sidebar-text" style="padding: 5%;">Bracketing</li>
+                </center>
+            </ul>
+        </div>
+
+        <!-- Home page content -->
+        <div class="content" id="home-content">
+            <!-- Highlight Section -->
+            <div class="highlight-section">
+                <div class="highlight-container">
+                    <img src="homepage-highlight.jpg" alt="Sports Highlight" class="highlight-image">
+                    <div class="highlight-text">
+                        <p id="highlight-description">
+                            Michael gracefully, releasing the perfect shot over a determined defender, capturing the essence of precision and competition on the world stage of basketball.</p>
+                    </div>
+                </div>                
+            </div>
+            <div>
+                <div>
+                    <center><p style="color: #bdb8d7;"><b>RECAP GAME SCORE</b></h2></center>
+                </div>
+                <!-- Matches Section (Side by side boxes) -->
+                <div class="matches-section">
+                    <div id="match-container">
+                        <!-- Match Cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+            
+
+            <footer class="site-footer">
+                <div class="footer-container">
+                    <!-- Footer Navigation Links -->
+                    <div class="footer-nav">
+                        <a href="/">Home</a>
+                        <a href="#schedule">Schedule</a>
+                        <a href="#teams">Teams</a>
+                        <a href="#news">News</a>
+                        <a href="#about">About</a>
+                    </div>
+            
+                    <!-- Social Media Links -->
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com" target="_blank"><img src="facebook-icon.png" alt="Facebook"></a>
+                        <a href="https://www.twitter.com" target="_blank"><img src="twitter-icon.png" alt="Twitter"></a>
+                        <a href="https://www.instagram.com" target="_blank"><img src="instagram-icon.png" width="auto" alt="Instagram"></a>
+                    </div>
+            
+                    <!-- Copyright Section -->
+                    <div class="footer-copyright">
+                        <p>© 2024 GBA. All Rights Reserved. | Designed by Group 4 HCI</p>
+                    </div>
+                </div>
+            </footer>
+        </div>        
+
+        <!-- Match page content -->
+        <div class="content" id="match-content" style="display:none;">
+            <div class="gym-header">BARANGAY GUADALUPE GYM</div>
+            <div class="header-container">
+                <h2><b>CURRENT MATCH</b></h2>     
+            </div> 
+            <br>
+            <span class="match-header w3-round-xxlarge">
+                <div class="team-container-current">
+                    <img class="logo-image-current round-pic team-logo-1" alt="Basketball Team Logo">
+                    <span class="team-display-left">Team 1</span>
+                </div>
+                <span class="vs" style="font-size: 130px;">VS</span>
+                <div class="team-container-current">
+                    <img class="logo-image-current round-pic team-logo-2" alt="Basketball Team Logo">
+                    <span class="team-display-right">Team 2</span>
+                </div>
+            </span>                                
+            <div class="header-container">
+                <h2><b>PREVIOUS MATCHES</b></h2>   
+            </div>                
+
+            <!-- Match details list -->
+            <div class="match-list" id="matchList">
+                <!-- Game results display -->
+            </div>
+
+        </div>
+
+    <!-- Schedule page content -->
+    <div class="content" id="schedule-content" style="display:none;">
+        <div class="gym-header">
+            BARANGAY GUADALUPE GYM
+        </div>
+        <div class="schedule-layout">
+            <img src="court.png" alt="Court Layout" class="court-layout">
+            <div class="schedule-list">
+                <div class="schedule-title">
+                    <h3>Schedule</h3>
+                </div>
+                <ul class="unselect"> <!--LIST OF SCHEDULES WILL SHOW HERE --> </ul>
+                <div id="selected-match-details" class="selected-match-details"></div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Purchase page content -->
+    <div class="content" id="purchase-content" style="display: none;">
+        <div class="gym-header">Purchase Information</div>
+        <form id="purchase-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <div class="form-actions">
+                <button type="button" onclick="showContent('schedule-content')">Back</button>
+                <button type="submit">Next &gt;&gt;</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Purchase Seats -->
+    <div class="content" id="seat-selection-content" style="display: none;">
+        <div class="gym-header">Purchase Seats</div>
+        <div class="seat-selection-layout">
+            <!-- Court Image -->
+            <div class="court-image">
+                <img src="seats.png" alt="Court Layout" class="seats-layout">
+            </div>
+            
+            <!-- Seat Information Form -->
+            <div class="seat-selection-form">
+                <label for="seat-type">Seat</label>
+                <select id="seat-type" name="seat-type" onchange="calculateTotal()">
+                    <option value="" disabled selected>Select Seat Type</option>
+                    <option value="750">Upperbox - P750</option>
+                    <option value="850">Lowerbox - P850</option>
+                </select>
+                
+                <label for="seat-quantity">Quantity</label>
+                <center>
+                    <div class="quantity-selector">
+                        <button type="button" onclick="decrementQuantity()">-</button>
+                        <input type="text" id="seat-quantity" name="seat-quantity" value="0" onchange="validateAndCalculateTotal()">
+                        <button type="button" onclick="incrementQuantity()">+</button>
+                    </div>
+                </center>
+                
+                <label>Total</label>
+                <div id="total-amount">P 0</div>
+            
+                <div class="form-actions">
+                    <button type="button" onclick="showContent('purchase-content')">Back</button>
+                    <button type="button" onclick="proceedToPayment()">Buy Ticket</button>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <!-- QR Code Content -->
+    <div class="content" id="qr-code-content" style="display: none;">
+        <h2 class="gym-header">Barangay Guadalupe Gym</h2>
+        <div class="qr-code-container">
+            <h3>Purchase Information</h3>
+            <p class="qr-instructions">Take a Screenshot or Download the QR code below:</p>
+            <div class="qr-code-container" id="qr-code-container"></div>
+            <p class="qr-instructions">Present it to the ticketing booth. Make sure to not lost this as this will be base on payment.</p>
+            <button id="qr-download-btn" style="display: none;" class="qr-download-btn">Download QR Code</button>
+            <button type="button" onclick="showContent('seat-selection-content')">Buy New Ticket</button>
+        </div>
+    </div>
+                
+            <!-- Bracket page content -->
+    <div class="content" id="bracketing-content" style="display: none;">
+        <div class="gym-header">BARANGAY GUADALUPE GYM</div>
+        <h1 class="bracket-title">Brackets</h1>
+        
+        <!-- Bracket layout with rounds -->
+        <div class="bracket-container" id="bracket-container">
+            <!-- Bracket will be dynamically rendered here -->
+        </div>
+        
+                     
+    </div>
+
+        <!-- Hidden Admin Login Button -->
+    <div id="admin-login-icon" title="Admin Login">
+        <i class="fas fa-user-secret"></i>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="admin-login-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <p id="login-message" class="error-msg"></p>
+        </div>
+    </div>
+
+<script>
+    // Fetch the latest 3 matches from the server
+    async function fetchLatestMatches() {
+        try {
+            const response = await fetch('homeData.php?action=getMatches');
+            const data = await response.json();
+
+            // Get the latest 3 matches sorted by SCHED_DATE
+            const latestMatches = data.sort((a, b) => new Date(b.SCHED_DATE) - new Date(a.SCHED_DATE)).slice(0, 3);
+
+            // Render the matches
+            renderMatches(latestMatches);
+        } catch (error) {
+            console.error('Error fetching matches:', error);
+        }
+    }
+    fetchLatestMatches();
+
+    // Function to render the match cards dynamically
+    function renderMatches(matches) {
+        console.log(matches);
+        const matchContainer = document.getElementById('match-container');
+        matchContainer.innerHTML = ''; // Clear any existing content
+
+        matches.forEach(match => {
+            const matchCard = document.createElement('div');
+            matchCard.classList.add('match-card');
+
+            // Match Date
+            const matchDate = document.createElement('div');
+            matchDate.classList.add('match-date');
+            matchDate.textContent = match.SCHED_DATE;
+
+            // Team Section (Logo, Name, Score)
+            const teamSection = document.createElement('div');
+            teamSection.classList.add('team-section');
+
+            // Team 1
+            const team1 = document.createElement('div');
+            team1.classList.add('team-home');
+            const team1Logo = document.createElement('img');
+            team1Logo.classList.add('team-logo');
+            team1Logo.src = match.TEAM1_LOGO_PATH;
+            const team1Name = document.createElement('div');
+            team1Name.classList.add('team-name');
+            team1Name.textContent = match.TEAM1_NAME;
+            const team1Score = document.createElement('div');
+            team1Score.classList.add('team-score');
+            team1Score.textContent = `${match.TEAM_1_SCORE || '0'}`;
+            team1.appendChild(team1Logo);
+            team1.appendChild(team1Name);
+            team1.appendChild(team1Score);
+
+            // Team 2
+            const team2 = document.createElement('div');
+            team2.classList.add('team-home');
+            const team2Logo = document.createElement('img');
+            team2Logo.classList.add('team-logo');
+            team2Logo.src = match.TEAM2_LOGO_PATH;
+            const team2Name = document.createElement('div');
+            team2Name.classList.add('team-name');
+            team2Name.textContent = match.TEAM2_NAME;
+            const team2Score = document.createElement('div');
+            team2Score.classList.add('team-score');
+            team2Score.textContent = `${match.TEAM_2_SCORE || '0'}`;
+            team2.appendChild(team2Logo);
+            team2.appendChild(team2Name);
+            team2.appendChild(team2Score);
+
+            // Highlight the higher score
+            const team1ScoreValue = parseInt(match.TEAM_1_SCORE || '0', 10);
+            const team2ScoreValue = parseInt(match.TEAM_2_SCORE || '0', 10);
+
+            if (team1ScoreValue > team2ScoreValue) {
+                team1Score.style.color = 'white';
+                team2Score.style.color = 'grey';
+            } else if (team2ScoreValue > team1ScoreValue) {
+                team1Score.style.color = 'grey';
+                team2Score.style.color = 'white';
+            } else {
+                team1Score.style.color = 'black';
+                team2Score.style.color = 'black';
+            }
+
+            teamSection.appendChild(team1);
+            teamSection.appendChild(team2);
+
+            matchCard.appendChild(matchDate);
+            matchCard.appendChild(teamSection);
+
+            matchContainer.appendChild(matchCard);
+        });
+    }
+
+   function fetchCurrentlyPlaying() {
+            fetch('fetchTeams.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === "success") {
+                        // Update team names
+                        document.querySelector(".team-display-left").textContent = data.data.TEAM_1_NAME;
+                        document.querySelector(".team-display-right").textContent = data.data.TEAM_2_NAME;
+
+                        // Update team logos
+                        const logoImage1 = document.querySelector(".team-logo-1"); // Select single image element for TEAM_1
+                        const logoImage2 = document.querySelector(".team-logo-2"); // Select single image element for TEAM_2
+
+                        // Set the image sources to the fetched logos
+                        logoImage1.src = data.data.TEAM_1_LOGO; // Use a default logo if none is provided
+                        logoImage2.src = data.data.TEAM_2_LOGO;
+                    } else {
+                        alert(data.message || "Failed to fetch teams.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching currently playing teams:", error);
+                    alert("Error fetching data.");
+                });
+        }
+        fetchCurrentlyPlaying();
+
+        function fetchAndDisplayMatchList() {
+            fetch('matchHandler.php?action=getMatches')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success" && Array.isArray(data.matches)) {
+                        const matchList = document.getElementById("matchList");
+                        matchList.innerHTML = ''; // Clear existing match list
+
+                        data.matches.forEach((match, index) => {
+                            const matchItem = document.createElement("div");
+                            matchItem.className = "match-item";
+
+                            // Alternate background color based on index
+                            matchItem.style.backgroundColor = index % 2 === 0 ? "#4d4d4d" : "#666666";
+
+                            // Determine winner and loser styles
+                            const team1Class = match.TEAM_1_SCORE > match.TEAM_2_SCORE ? "winner" : "loser";
+                            const team2Class = match.TEAM_2_SCORE > match.TEAM_1_SCORE ? "winner" : "loser";
+
+                            matchItem.innerHTML = `
+                                <div class="match-item-content">
+                                    <!-- Team 1 Logo -->
+                                    <span style="padding-right: 13%"></span>
+                                    <div class="logo-container">
+                                        <img src="${match.TEAM1_LOGO}" style="height: 120px; width:120px" alt="${match.TEAM_1}" class="team-logo">
+                                    </div>
+
+                                    <!-- Team 1 Name -->
+                                    <div class="team-name ${team1Class}">${match.TEAM_1}</div>
+
+                                    <!-- VS Label -->
+                                    <div class="vs-label">VS</div>
+
+                                    <!-- Team 2 Name -->
+                                    <div class="team-name ${team2Class}">${match.TEAM_2}</div>
+
+                                    <!-- Team 2 Logo -->
+                                    <div class="logo-container">
+                                        <img src="${match.TEAM2_LOGO}" alt="${match.TEAM_2}" class="team-logo">
+                                    </div>
+                                    <span style="padding-right: 13%"></span>
+
+                                    <!-- Scores -->
+                                    <div class="score ${team1Class}">${match.TEAM_1_SCORE}</div>
+                                    <div class="separator">|</div>
+                                    <div class="score ${team2Class}">${match.TEAM_2_SCORE}</div>
+                                </div>
+                            `;
+                            matchList.appendChild(matchItem); // Add new match item to the match list
+                        });
+                    } else {
+                        console.error("Failed to load match list");
+                    }
+                })
+                .catch(error => console.error("Error fetching match list:", error));
+        }
+        fetchAndDisplayMatchList();
+
+        // Call this function on page load to display the matches
+        fetchAndDisplayMatchList()
+        window.onload = fetchAndDisplayMatchList;
+
+        // SEAT SELECTION 
+        function fetchScheduleData() {
+            fetch('scheduleData.php', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'actionType': 'fetchSchedule'
+                })
+            })
+            .then(response => response.json())
+            .then(scheduleData => {
+                const scheduleList = document.querySelector('.schedule-list ul');
+                scheduleList.innerHTML = ''; // Clear any existing schedule items
+
+                scheduleData.forEach(schedule => {
+                    const schedDate = new Date(schedule.schedDate);
+                    const formattedDate = schedDate.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+
+                    const scheduleItem = document.createElement('li');
+                    scheduleItem.innerHTML = `
+                        <a class="schedule-item" 
+                        data-schedid="${schedule.schedId}" 
+                        data-eventname="${schedule.eventName}">
+                            ${schedule.team1Name} vs ${schedule.team2Name} | ${formattedDate} | ${schedule.schedTime}
+                        </a>
+                    `;
+
+                    // Add event listener for item selection
+                    scheduleItem.querySelector('.schedule-item').addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        // Highlight the selected item
+                        document.querySelectorAll('.schedule-item').forEach(item => item.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Display the selected match details
+                        const selectedMatchDetails = document.getElementById('selected-match-details');
+
+                        // Proceed to the purchase form
+                        showContent('purchase-content');
+                    });
+
+                    scheduleList.appendChild(scheduleItem);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching schedule data:", error);
+                alert("Failed to load schedule data. Please try again later.");
+            });
+        }
+
+        // Call this function when the page loads
+        fetchScheduleData();
+
+
+        //FOR SELECTING SEATS, QUANTITY, TOTAL
+        function goToSeatSelection() {
+            showContent('seat-selection-content');
+        }
+
+        // Validate input and calculate total based on seat type and quantity
+        function validateAndCalculateTotal() {
+            const seatQuantityInput = document.getElementById('seat-quantity');
+            const seatType = document.getElementById('seat-type').value;
+            const seatQuantity = parseInt(seatQuantityInput.value, 10);
+
+            if (!Number.isInteger(seatQuantity) || seatQuantity < 0) {
+                alert("Please enter a valid quantity.");
+                seatQuantityInput.value = 0; // Reset invalid input
+            }
+            calculateTotal(); // Recalculate total
+        }
+
+        // Calculate total based on seat type and quantity
+        function calculateTotal() {
+            const seatType = document.getElementById('seat-type').value;
+            const seatQuantity = parseInt(document.getElementById('seat-quantity').value, 10);
+            const totalAmount = seatType && seatQuantity ? seatType * seatQuantity : 0;
+            document.getElementById('total-amount').textContent = `P ${totalAmount}`;
+        }
+
+        // Increment seat quantity
+        function incrementQuantity() {
+            const quantityInput = document.getElementById('seat-quantity');
+            const currentQuantity = parseInt(quantityInput.value, 10) || 0;
+            quantityInput.value = currentQuantity + 1;
+            calculateTotal();
+        }
+
+        // Decrement seat quantity
+        function decrementQuantity() {
+            const quantityInput = document.getElementById('seat-quantity');
+            const currentQuantity = parseInt(quantityInput.value, 10) || 0;
+            if (currentQuantity > 0) {
+                quantityInput.value = currentQuantity - 1;
+                calculateTotal();
+            }
+        }
+
+        // Automatically set seat quantity to 1 and calculate total when a seat type is selected
+        document.getElementById('seat-type').addEventListener('change', function() {
+            const seatType = this.value;
+            const quantityInput = document.getElementById('seat-quantity');
+
+            if (seatType) {
+                quantityInput.value = 1; // Automatically set the quantity to 1
+                calculateTotal(); // Calculate the total
+            } else {
+                quantityInput.value = 0; // Reset the quantity if no seat type is selected
+                document.getElementById('total-amount').textContent = `P 0`;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('fetchMatches.php')
+                .then(response => response.json())
+                .then(data => 
+                    {   console.log(data);
+                        renderBracket(data)})
+                .catch(error => console.error('Error fetching matches:', error));
+        });
+
+        function fetchGameMatches(){
+            fetch('fetchMatches.php')
+                .then(response => response.json())
+                .then(data => 
+                    {   console.log(data);
+                        renderBracket(data)})
+                .catch(error => console.error('Error fetching matches:', error));
+        }
+
+        function renderBracket(matches) { 
+            const container = document.getElementById('bracket-container');
+
+            let quarterFinals = matches.filter(match => match.ROUND_STATUS === 'QUARTER FINALS' && [1, 2, 3, 4].includes(parseInt(match.MATCHES_ID)));
+            let semiFinals = matches.filter(match => match.ROUND_STATUS === 'SEMI FINALS' && [5, 6].includes(parseInt(match.MATCHES_ID)));
+            let finals = matches.filter(match => match.ROUND_STATUS === 'FINALS' && [7].includes(parseInt(match.MATCHES_ID)));
+            console.log(finals)
+            // Render Quarter Finals
+            let quarterHtml = `
+                <div class="round" id="quarter-finals">
+                    <h2>Quarter Finals</h2>
+                    ${quarterFinals.map(match => `
+                        <div class="match">
+                            <span class="team" onclick="advanceTeam(this)">${match.TEAM1_NAME}</span>
+                            <p style="color: white">VS</p>
+                            <span class="team" onclick="advanceTeam(this)">${match.TEAM2_NAME}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-1"></span>
+                    <span class="horizontal-line-2"></span>
+                </div>
+            `;
+
+            // Render Semi Finals
+            let semiFinalHtml = `
+                <div class="round" id="semi-finals">
+                    <h2>Semi Finals</h2>
+                    ${semiFinals.map(match => `
+                        <div class="match">
+                            <span class="team" onclick="advanceTeam(this)">${match.TEAM1_NAME}</span>
+                            <p style="color: white">VS</p>
+                            <span class="team" onclick="advanceTeam(this)">${match.TEAM2_NAME}</span>
+                        </div>
+                    `).join('<div style="margin-bottom: 150px;"></div>')}
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-3"></span>
+                </div>
+            `;
+
+            // Render Finals
+            let finalsHtml = `
+                <div class="round" id="finals">
+                    <h2>Finals</h2>
+                    <div class="match">
+                        <span class="team" onclick="advanceTeam(this)">${finals[0]?.TEAM1_NAME || 'Finalist 1'}</span>
+                        <p style="color: white">VS</p>
+                        <span class="team" onclick="advanceTeam(this)">${finals[0]?.TEAM2_NAME || 'Finalist 2'}</span>
+                    </div>
+                </div>
+                <div class="line-round">
+                    <span class="horizontal-line-4"></span>
+                </div>
+
+                <div class="round" id="champion">
+                    <h2>Champion</h2>
+                    <div class="match">
+                            <span class="team champion">${finals[0]?.WINNER || 'Winner'}</span>
+                        </div>
+                </div>
+            `;
+
+            // Combine and inject HTML into the container
+            container.innerHTML = quarterHtml + semiFinalHtml + finalsHtml;
+        }
+</script>
+
+</body>
+</html>

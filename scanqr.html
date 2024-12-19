@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="ball.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball Event</title>
+    <script src="jsresources/webcam.min.js"></script>
+    <script src="jsresources/jsQR.min.js"></script>
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="jsresources/all.min.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #262626;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .qr-scan-container {
+        width: 90%;
+        max-width: 1000px;
+        height: auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .scanqr-header {
+        background-color: #2c3e73;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        font-size: 24px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .qr-scan-content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 450px;
+    }
+
+    .camera-container {
+        flex: 1;
+        background: #e7e7e7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .camera-label {
+        margin-left: 17%;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    video {
+        width: 100%;
+        max-width: 450px;
+        border: 4px solid #2c3e73;
+        border-radius: 8px;
+    }
+
+    .details-container {
+        flex: 1;
+        padding: 10px;
+        background: #f9fafc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .details-container h3 {
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .details-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+
+    .details-card p {
+        margin: 5px 0;
+        font-size: 18px;
+        color: #303030;
+    }
+
+    .details-card p span {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .paid-message {
+        color: green;
+        font-weight: bold;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="qr-scan-container">
+        <!-- Header -->
+        <div class="scanqr-header">
+            BARANGAY GUADALUPE GYM
+        </div>
+        <div class="camera-label">Scan QR Code Here</div>
+
+        <!-- Content Section -->
+        <div class="qr-scan-content">
+            <!-- Camera Section -->
+            
+            <div class="camera-container">
+                <video id="camera" autoplay></video>
+            </div>
+
+            <!-- Details Section -->
+            <div class="details-container">
+                <h3><b>TICKET DETAILS</b></h3>
+                <div id="ticket-info" class="details-card">
+                    <center><p>Scan a QR Code to display ticket details.</p></center>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+let videoElement = document.getElementById('camera');
+let ticketInfoElement = document.getElementById('ticket-info');
+let qrCodeData = '';
+
+// Start Camera function
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({
+        video: {
+            facingMode: 'environment'
+        }
+    })
+    .then(function(stream) {
+        videoElement.srcObject = stream;
+        videoElement.play();
+        requestAnimationFrame(scanQRCode);
+    })
+    .catch(function(error) {
+        console.error("Error accessing webcam: ", error);
+    });
+}
+
+// QR Code scanning function
+function scanQRCode() {
+    if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.height = videoElement.videoHeight;
+        canvas.width = videoElement.videoWidth;
+
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+        let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+
+        if (qrCode) {
+            if (qrCode.data !== qrCodeData) {
+                qrCodeData = qrCode.data;
+                fetchTicketInfo(qrCode.data);  // Call the function to fetch ticket info
+            }
+        }
+    }
+    requestAnimationFrame(scanQRCode);
+}
+
+// Fetch ticket information using the scanned REFERENCE_NO
+function fetchTicketInfo(referenceNo) {
+    fetch('scanqrHandler.php?actionType=fetchTicketInfo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ referenceNo: referenceNo })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            displayTicketInfo(data.ticket);  // Display ticket info
+        } else {
+            ticketInfoElement.innerHTML = "";
+            ticketInfoElement.innerHTML = `<p class="error-message">Ticket Not Found.</p>`;
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching ticket info:", error);
+    });
+}
+
+// Display ticket information on the page
+function displayTicketInfo(ticket) {
+    ticketInfoElement.innerHTML = "";
+    if (ticket.STATUS === 'PAID') {
+        ticketInfoElement.innerHTML = `
+            <b><center><p id="payment-message" style="color: green; font-size:20px">TICKET PAID.</p></center></b>
+            <p>Reference No: ${ticket.REFERENCE_NO}</p>
+            <p>Buyer Name: ${ticket.BUYER_NAME}</p>
+            <p>Seat: ${ticket.SEAT}</p>
+            <p>Quantity: ${ticket.QUANTITY}</p>
+            <p>Total: ${ticket.TOTAL}</p>
+            <p>Status: <a class="paid-message">${ticket.STATUS}</a></p>
+        `;
+    } else {
+        ticketInfoElement.innerHTML = `
+            <b><center><p id="payment-message" style="color: red; font-size:19px">THE TICKET IS NOT YET PAID. PLEASE SEE THE AMOUNT.</p></center></b>
+            <p>Reference No: ${ticket.REFERENCE_NO}</p>
+            <p>Buyer Name: ${ticket.BUYER_NAME}</p>
+            <p>Seat: ${ticket.SEAT}</p>
+            <p>Quantity: ${ticket.QUANTITY}</p>
+            <p>Total: ${ticket.TOTAL}</p>
+            <p>Status: <a style="color: red; font-weight: bold">${ticket.STATUS}</a></p>
+            <button onclick="markAsPaid('${ticket.REFERENCE_NO}')">MARK AS PAID</button>
+        `;
+    }
+}
+
+// Mark the ticket as PAID
+function markAsPaid(referenceNo) {
+    const confirmPaid = confirm("Is the buyer already paid?");
+    if (confirmPaid) {
+        fetch('scanqrHandler.php?actionType=updateTicketStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ referenceNo: referenceNo, status: 'PAID' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert("Ticket status updated to PAID.");
+                fetchTicketInfo(referenceNo);  // Refresh ticket info
+            } else {
+                alert("Failed to update status.");
+            }
+        })
+        .catch(error => {
+            console.error("Error updating ticket status:", error);
+        });
+    }
+}
+
+// Call this function to start the camera
+startCamera();
+</script>
+
+</body>
+</html>
